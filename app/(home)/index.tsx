@@ -14,8 +14,7 @@ const HomeScreen = () => {
         <View style={{ position: 'absolute', width: '100%' }}>
 				  <NotificationPopup/>
 			  </View>
-        {/* <Home/> */}
-        <PersonalizedVideo/>
+        <Home/>
     </View>
   )
 }

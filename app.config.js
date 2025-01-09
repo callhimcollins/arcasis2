@@ -17,8 +17,8 @@ export default {
       openAiApiKey: process.env.OPENAI_API_KEY,
       stripeSecretKey: process.env.STRIPE_SECRET_KEY,
       eas: {
-        projectId: "432929f9-5ba4-4099-bd61-a5f6e4668e1f",
-      }
+        projectId: "098f8b9e-9194-4472-967d-0b1cdfb45044"
+      },
     },
     ios: {
       supportsTablet: true,
@@ -26,12 +26,14 @@ export default {
         NSCameraUsageDescription:
           "This app needs access to your camera to send personalized video to gift recipient.",
       },
+      bundleIdentifier: "com.arcasisco.arcasis",
     },
     android: {
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff",
       },
+      package: "com.arcasisco.arcasis",
     },
     web: {
       bundler: "metro",
@@ -63,7 +65,6 @@ export default {
     ],
     experiments: {
       typedRoutes: true,
-    },
-    owner: "callhimcollins"
+    }
   },
 };
