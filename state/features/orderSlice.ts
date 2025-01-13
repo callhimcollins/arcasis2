@@ -7,6 +7,7 @@ type OrderStateProps = {
     cartProducts: ProductType[],
     subtotal: number,
     shippingAddress: ShippingAddressType | null,
+    orderTotal: number
 }
 
 const initialState:OrderStateProps = {
@@ -14,7 +15,8 @@ const initialState:OrderStateProps = {
     shippingAddress: null,
     cartItems: [],
     cartProducts: [],
-    subtotal: 0
+    subtotal: 0,
+    orderTotal: 0
 }
 
 const orderSlice = createSlice({
@@ -79,6 +81,9 @@ const orderSlice = createSlice({
         clearCartProducts: (state) => {
             state.cartProducts = []
             state.subtotal = 0
+        },
+        setOrderTotal: (state, action) => {
+            state.orderTotal = ((state.subtotal + action.payload) + (state.subtotal * .08) + 4).toFixed(2)
         }
     }
 })
@@ -94,6 +99,7 @@ export const {
     setShippingAddress,
     updateOrderStatus,
     clearOrderDetails,
-    clearCartProducts
+    clearCartProducts,
+    setOrderTotal
 } = orderSlice.actions
 export default orderSlice.reducer

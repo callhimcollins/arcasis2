@@ -26,6 +26,7 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
             shadowOpacity: 0.15,  // Softer opacity for less intensity
             shadowRadius: 8,  // Slight blur for a natural look
             backgroundColor: 'white',
+            elevation: 3,
             padding: 15,
             width: 300,
             borderRadius: 15,

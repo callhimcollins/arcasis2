@@ -79,9 +79,6 @@ const Profile = () => {
             </View>
             
             <ScrollView contentContainerStyle={styles.scrollContentContainer}>
-                { user.userSummary && <View style={styles.userSummaryContainer}>
-                    <Text style={styles.userSummaryText}>{user.userSummary}</Text>
-                </View>}
                 <View style={styles.giftInfoContainer}>
                     <View style={styles.giftInfoItem}>
                         <Text style={styles.giftInfoItemText}>Number Of People You Have Gifted</Text>

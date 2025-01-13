@@ -102,7 +102,7 @@ const ChatList = ({ data, retryRecommendations }: ChatListProps) => {
     
             const { error } = await supabase
                 .from('Orders')
-                .update({ status: 'fulfilled' })
+                .update({ status: 'pending' })
                 .eq('orderId', order.orderDetails?.orderId);
     
             if (!error) {
@@ -204,45 +204,33 @@ const ChatList = ({ data, retryRecommendations }: ChatListProps) => {
                             <TypingAnimation isVisible={botReplying}/>
                         </View>}
                         { productsFound && productsFound.length > 0 && <View style={[styles.recommendationsContainer, (order.orderDetails?.status === 'fulfilled' || order.orderDetails?.status === 'to be fulfilled') && { backgroundColor: '#39A13D' }]}>
-                            <View style={styles.recommendationsHeader}>
-                                <TouchableOpacity onPress={updateOrder} style={styles.retryButton}>
+                            { order.orderDetails?.status === 'created' && <View style={styles.recommendationsHeader}>
+                                {<TouchableOpacity onPress={updateOrder} style={styles.retryButton}>
                                     <Ionicons name="gift" size={24} color="white"/>
-                                    <Text style={styles.retryButtonText}>{ (order.orderDetails?.status === 'fulfilled' || order.orderDetails?.status === 'to be fulfilled') ? 'Re-Order' : 'Begin Order'}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={order.orderDetails?.status === 'fulfilled' ? goToRequestReturnPage : retryRecommendations} style={styles.retryButton}>
+                                    <Text style={styles.retryButtonText}>Begin Order</Text>
+                                </TouchableOpacity>}
+                                <TouchableOpacity onPress={retryRecommendations} style={styles.retryButton}>
                                     <MaterialCommunityIcons name="reload" size={24} color="white"/>
-                                    <Text style={styles.retryButtonText}>{ order.orderDetails?.status === 'fulfilled' ? 'Request Return' : 'Retry Curation'}</Text>
+                                    <Text style={styles.retryButtonText}>Retry Curation</Text>
                                 </TouchableOpacity>
-                            </View> 
+                            </View> }
+                            {
+                                order.orderDetails?.status === 'fulfilled' &&                                 
+                                <TouchableOpacity onPress={goToRequestReturnPage} style={[styles.retryButton, { marginRight: 15, marginBottom: 10 }]}>
+                                <MaterialCommunityIcons name="reload" size={24} color="white"/>
+                                <Text style={styles.retryButtonText}>Request A Return</Text>
+                            </TouchableOpacity>
+                            }
                             { Platform.OS === 'android' && <Text style={styles.androidSwipeText}> Swipe To See Items </Text>}
                             <RecommendationsFlatList data={productsFound}/>
-
-                            <TouchableOpacity onPress={navigateToSearch} style={styles.searchButton}>
+                            { order.orderDetails?.status === 'created' && <TouchableOpacity onPress={navigateToSearch} style={styles.searchButton}>
                                 <Octicons name='search' size={24} color={appearanceMode.primaryColor}/>
                                 <Text style={styles.searchButtonText}>Search For A Specific Product</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity>}
                         </View>}
                         </>
                     )}
                 />
-
-                {/* Top Gradient */}
-                {/* <LinearGradient
-                    colors={['#FFFFFF', 'rgba(255, 255, 255, 0.9)', 'rgba(255, 255, 255, 0.5)', 'rgba(255, 255, 255, 0)']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0, y: 1 }}
-                    style={[styles.gradient, styles.topGradient]}
-                    pointerEvents="none"
-                /> */}
-
-                {/* Bottom Gradient */}
-                {/* <LinearGradient
-                    colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.5)', 'rgba(255, 255, 255, 0.9)', '#FFFFFF']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0, y: 1 }}
-                    style={[styles.gradient, styles.bottomGradient]}
-                    pointerEvents="none"
-                /> */}
             </KeyboardAvoidingView>
         </View>
     );

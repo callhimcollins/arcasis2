@@ -64,7 +64,7 @@ const Body = ({ retryRecommendations }: BodyProps) => {
     
         } catch (error) {
             // Handle errors appropriately
-            console.error("Error fetching processing orders:", error);
+            console.log("Error fetching processing orders:", error);
             // Consider adding error state or user notification
         }
     }

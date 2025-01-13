@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/state/store'
 import { ShippingAddressType } from '@/types'
 import { SimpleLineIcons } from '@expo/vector-icons'
-import { setShippingAddress } from '@/state/features/orderSlice'
+import { setOrderTotal, setShippingAddress } from '@/state/features/orderSlice'
 import { router } from 'expo-router'
 
 interface AddressBoxProps extends ShippingAddressType {
@@ -40,6 +40,7 @@ const AddressBox: React.FC<AddressBoxProps> = ({
         userId: user.userId,
         phoneNumber
       }))
+      dispatch(setOrderTotal(0))
       router.push('/(order)/checkoutscreen')
     }
   }

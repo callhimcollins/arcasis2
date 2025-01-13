@@ -6,12 +6,10 @@ type UserStateType = Omit<UserType, "createdAt" | "updatedAt" >
 const initialState:UserStateType = {
     userId: null,
     fullName: null,
-    dateOfBirth: null,
-    gender: null,
     email: null,
     profileImageUrl: null,
     phoneNumber: null,
-    userSummary: null,
+    stripe_customer_id: null,
     botMemories: []
 }
 
@@ -34,9 +32,12 @@ const userSlice = createSlice({
         removeFromBotMemory: (state, action) => {
             const filteredBotMemories = state.botMemories && state.botMemories.filter(memory => memory.botMemoryId !== action.payload)
             state.botMemories = filteredBotMemories
+        },
+        setStripeCustomerID: (state, action) => {
+            state.stripe_customer_id = action.payload
         }
     }
 })
 
-export const { setUser, setBotData, removeUser, setBotMemories, removeFromBotMemory } = userSlice.actions;
+export const { setUser, setBotData, removeUser, setBotMemories, removeFromBotMemory, setStripeCustomerID } = userSlice.actions;
 export default userSlice.reducer;

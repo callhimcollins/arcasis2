@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import getStyles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/state/store'
@@ -20,6 +20,8 @@ import crawlProduct from '@/utils/productCrawler'
 import NotificationPopup from '../NotificationPopup'
 import { clearNotification, setNotification } from '@/state/features/notificationSlice'
 import { setOrderDetails } from '@/state/features/orderSlice'
+import { registerForPushNotificationsAsync } from '@/utils/registerPushNotificationsAsync'
+import * as ExternalNotifications from 'expo-notifications';
 
 const Home = () => {
 	const appearanceMode = useSelector((state:RootState) => state.appearance.currentMode)
@@ -32,6 +34,7 @@ const Home = () => {
 	const [input, setInput] = useState<string>('')
 	const [lastUserResponse, setLastUserResponse] = useState<string>('')
 	const [botLastResponse, setBotLastResponse] = useState<string>('')
+	const [expoPushToken, setExpoPushToken] = useState<string>('')
 	const styles = getStyles(appearanceMode)
 	const dispatch = useDispatch()
 	const botId = randomUUID()
@@ -58,6 +61,8 @@ const Home = () => {
 		  .single()
 		  .then(({ data, error }) => {
 			if (data) {
+				registerForPushNotificationsAsync(data.userId)
+				updateBadgeCount(data.userId)
 				dispatch(setUser(data))
 				getOrCreateBotForUser(data.userId)
 				getBotMemories(data.userId)
@@ -360,7 +365,7 @@ const Home = () => {
 			.in('name', productNames);
 	  
 		  if (exactError) {
-			console.error('Error fetching processed products:', exactError);
+			console.log('Error fetching processed products:', exactError);
 			await dispatch(setNotification({ message: `An Error occurred Curating Your Gift Box`, messageType: 'error', notificationType: 'system', showNotification: true, stay: false }))
 			return [];
 		  }
@@ -574,33 +579,73 @@ const Home = () => {
 		}
 	}
 
+	const updateBadgeCount = async (userId: string) => {
+		const { error } = await supabase
+		.from('Users')
+		.update({ badge_count: 0 })
+		.eq('userId', userId)
+		if(error) {
+		  console.log("An error occured updating badge count", error.message)
+		} else {
+		  console.log('badge count successfully updated')
+		}
+	  }
+
 
 	useEffect(() => {
 		checkSession()
 	}, [])
 	  
 
-	// useEffect(() => {
-	// 	if(!lastUserResponse) return;
-	// 	checkAIGeneration();
-	// }, [lastUserResponse])
+	useEffect(() => {
+		if(!lastUserResponse) return;
+		checkAIGeneration();
+	}, [lastUserResponse])
 
-	// useEffect(() => {
-	// 	if(!botLastResponse) return;
-	// 	const timeout = setTimeout(() => {
-	// 		checkIfAIShouldDetermineRecommendationsReady();
-	// 	}, 300);
-	// 	return () => clearTimeout(timeout); 
-	// }, [botLastResponse]);
+	useEffect(() => {
+		if(!botLastResponse) return;
+		const timeout = setTimeout(() => {
+			checkIfAIShouldDetermineRecommendationsReady();
+		}, 300);
+		return () => clearTimeout(timeout); 
+	}, [botLastResponse]);
 
-	// useEffect(() => {
-	// 	if(!botLastResponse || !lastUserResponse) return;	
-	// 	generateTopicForConversation()
-	// }, [botLastResponse, lastUserResponse]);
+	useEffect(() => {
+		if(!botLastResponse || !lastUserResponse) return;	
+		generateTopicForConversation()
+	}, [botLastResponse, lastUserResponse]);
 
-	// useEffect(() => {
-	// 	summarizeConversationAndSave()
-	// }, [order.orderDetails?.orderId])
+	useEffect(() => {
+		summarizeConversationAndSave()
+	}, [order.orderDetails?.orderId])
+	
+
+	useEffect(() => {
+
+		ExternalNotifications.setBadgeCountAsync(0).catch(error => {
+			console.log('Failed to reset badge count:', error);
+		});
+
+		const subscription = ExternalNotifications.addNotificationResponseReceivedListener(response => {
+			console.log("🔔 Notification Response: ", JSON.stringify(response, null, 2));
+		})
+
+		const subscription2 = ExternalNotifications.addNotificationReceivedListener(response => {
+			console.log("🔔 Notification Response 2: ", JSON.stringify(response, null, 2));
+		})
+
+	
+
+		return () => {
+			if (subscription && typeof subscription.remove === 'function') {
+			  subscription.remove();
+			}
+
+			if (subscription2 && typeof subscription2.remove === 'function') {
+			  subscription2.remove();
+			}
+		  };
+	  }, []);
 
     return (
         <View style={styles.container}>

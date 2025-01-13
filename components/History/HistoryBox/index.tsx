@@ -47,7 +47,6 @@ const HistoryBox = ({ historyBox, onDelete }: HistoryBoxProps) => {
         .select('*, Products(*)')
         .eq('orderId', orderId)
         if(data) {
-            console.log("Data gotten from cart items", data);
             data.forEach(item => {
                 dispatch(addToProductsFound(item.Products))
             })

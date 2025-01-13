@@ -80,7 +80,8 @@ const Header = () => {
                         <Text style={styles.createButtonText}>New</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={navigateToProfile}>
-                        <Image style={styles.profileImage} source={require('../../../assets/images/blankprofile.webp')}/>
+                        { !user.profileImageUrl && <Image style={styles.profileImage} source={require('../../../assets/images/blankprofile.webp')}/>}
+                        { user.profileImageUrl && <Image style={styles.profileImage} source={{ uri: user.profileImageUrl }}/>}
                     </TouchableOpacity>
                 </View>
             </View>

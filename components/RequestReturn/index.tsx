@@ -109,7 +109,7 @@ const RequestReturn = () => {
 
 
     return (
-        <KeyboardAwareScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+        <KeyboardAwareScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1, paddingBottom: 80 }}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Request Return</Text>
@@ -122,6 +122,7 @@ const RequestReturn = () => {
                             gap: 20,
                             padding: 20,
                         }}
+                        showsHorizontalScrollIndicator={false}
                     >
                         {productsFound.map((product, index) => (
                             <View style={styles.productContainer} key={index}>

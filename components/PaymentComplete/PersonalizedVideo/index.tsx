@@ -12,6 +12,7 @@ import * as FileSystem from 'expo-file-system'
 import { supabase } from '@/lib/supabase'
 import { setNotification } from '@/state/features/notificationSlice'
 import { useNavigation } from '@react-navigation/native'
+import * as SMS from 'expo-sms'
 
 const PersonalizedVideo = () => {
     const appearanceMode = useSelector((state: RootState) => state.appearance.currentMode)
@@ -21,11 +22,13 @@ const PersonalizedVideo = () => {
     const [facing, setFacing] = useState<CameraType>('front');
     const [video, setVideo] = useState<string>()
     const [flash, setFlash] = useState<FlashMode>('off');
+    const [smsIsAvailable, setSmsIsAvailable] = useState<boolean>(false)
     const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
     const user = useSelector((state:RootState) => state.user)
     const order = useSelector((state:RootState) => state.order)
     const dispatch = useDispatch()
-    const navigation = useNavigation()
+    
+
     useEffect(() => {
         (async () => {
             const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -213,12 +216,20 @@ const PersonalizedVideo = () => {
         }  
     }
 
+    const sendSMSToRecipient = async () => {
+        
+    }
+
 
     if (hasCameraPermission === null) {
         return <View />;
     } else if (hasCameraPermission === false) {
         return <Text>No access to camera</Text>;
     }
+
+    useEffect(() => {
+
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -237,9 +248,9 @@ const PersonalizedVideo = () => {
                 mode='video'
             >
                 <View style={styles.cameraHeader}>
-                    <TouchableOpacity onPress={handleFlash}>
+                    {/* <TouchableOpacity onPress={handleFlash}>
                         <Ionicons name='flash' color={ flash === 'on' ? '#FFD700' : 'white'} size={35}/>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity onPress={handleFlip}>
                         <MaterialIcons name={ Platform.OS === 'ios' ? 'flip-camera-ios' : 'flip-camera-android'} color={'white'} size={35} />
                     </TouchableOpacity>

@@ -11,15 +11,13 @@ export type UserType = {
     userId: string | null,
     fullName: string | null,
     email: string | null,
-    dateOfBirth: number | null,
-    gender: string | null,
     phoneNumber: string | null,
     profileImageUrl: string | null,
     createdAt: string | null,
     updatedAt: string | null,
-    userSummary: string | null,
     botData?: BotType | null,
-    botMemories?: BotMemoryBoxType[] | null
+    botMemories?: BotMemoryBoxType[] | null,
+    stripe_customer_id?: string | null
 }
 
 export type BotType = {
