@@ -88,6 +88,12 @@ const Header = () => {
             { chatTopic && <View style={styles.bottom}>
                 <Text numberOfLines={1} ellipsizeMode='tail' style={styles.chatTopic}>{cleanChatTopic()}</Text>
             </View> }
+            {
+                user.email === 'arcasisco@gmail.com' && 
+                <TouchableOpacity onPress={() => router.push('/(admin)/landingadminscreen')} style={styles.adminButton}>
+                    <Text style={styles.adminButtonText}>Go To Admin</Text>
+                </TouchableOpacity>
+            }
         </View>
     )
 }

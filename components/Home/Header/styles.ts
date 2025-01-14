@@ -1,5 +1,4 @@
 import { AppearanceStateType } from "@/types";
-import { current } from "@reduxjs/toolkit";
 import { Platform, StyleSheet } from "react-native";
 
 const getStyles = (appearanceMode: AppearanceStateType) => {
@@ -86,6 +85,16 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
             color: appearanceMode.textColor,
             fontFamily: 'sorabold',
             fontSize: 14
+        },
+        adminButton: {
+            backgroundColor: 'black',
+            paddingVertical: 8,
+            borderRadius: 15
+        },
+        adminButtonText: {
+            color: 'white',
+            fontFamily: 'sorabold',
+            textAlign: 'center'
         }
     });
 };

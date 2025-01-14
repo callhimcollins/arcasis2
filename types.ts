@@ -56,9 +56,8 @@ export type OrderType = {
     status: "created" | "pending" | "to be fulfilled" | "fulfilled" | null,
     deliveryFee?: number | null,
     orderTotal?: number | null,
-    paymentMethod?: "card" | "bank"| null,
-    billingAddressId?: string | null,
-    userAddressId?: string | null,
+    shippingAddressId?: string | null,
+    shippingAddress?: ShippingAddressType,
     chatsContainerId: string | null,
 }
 

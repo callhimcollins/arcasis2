@@ -19,7 +19,6 @@ const HomeScreen = () => {
 				  <NotificationPopup/>
 			  </View>
         <Home/>
-        {/* <Checkout/> */}
     </View>
   )
 }

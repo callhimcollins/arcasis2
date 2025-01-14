@@ -54,6 +54,7 @@ const RequestReturn = () => {
     }
 
     const sendReturnRequest = async () => {
+        console.log("Return!")
         if(!reasonForReturn?.trim()) {
             dispatch(setNotification({
                 message: itemsToReturn.length > 1 ? 'Enter Your Reasons For Return' : 'Enter Your Reason For Return',
@@ -158,7 +159,7 @@ const RequestReturn = () => {
                     />
                 </View>
 
-                <View style={[styles.footer, { position: 'relative', marginTop: 20 }]}>
+                <View style={[styles.footer, { marginTop: 20 }]}>
                     <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
                         <Text style={styles.backButtonText}>Go Back</Text>
                     </TouchableOpacity>

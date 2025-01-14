@@ -12,7 +12,7 @@ import * as FileSystem from 'expo-file-system'
 import { supabase } from '@/lib/supabase'
 import { setNotification } from '@/state/features/notificationSlice'
 import { useNavigation } from '@react-navigation/native'
-import * as SMS from 'expo-sms'
+// import * as SMS from 'expo-sms'
 
 const PersonalizedVideo = () => {
     const appearanceMode = useSelector((state: RootState) => state.appearance.currentMode)
@@ -169,6 +169,7 @@ const PersonalizedVideo = () => {
             console.log("Upload successful:", uploadData);
     
             await getPublicUrl(filePath)
+            // await sendSMSToRecipient()
     
         } catch (error) {
             console.error("Error in uploadAndSendVideo:", error);
@@ -216,10 +217,21 @@ const PersonalizedVideo = () => {
         }  
     }
 
-    const sendSMSToRecipient = async () => {
-        
-    }
+    // const sendSMSToRecipient = async () => {
+    //     const { result } = await SMS.sendSMSAsync(
+    //         ['985-215-2633'],
+    //         'Hey! Arcasis!',
+            
+    //     )
+    //     console.log(result)
+    // }
 
+        // useEffect(() => {
+    //     (async() => {
+    //         const smsIsAvailable = await SMS.isAvailableAsync();
+    //         setSmsIsAvailable(smsIsAvailable)
+    //     })()
+    // }, [])
 
     if (hasCameraPermission === null) {
         return <View />;
@@ -227,9 +239,7 @@ const PersonalizedVideo = () => {
         return <Text>No access to camera</Text>;
     }
 
-    useEffect(() => {
 
-    }, [])
 
     return (
         <View style={styles.container}>
