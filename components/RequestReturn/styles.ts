@@ -50,6 +50,13 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
             borderRadius: 30,
             alignItems: 'center'
         },
+        disabledButton: {
+            backgroundColor: '#7A7A7A',
+            paddingHorizontal: 15,
+            paddingVertical: 10,
+            borderRadius: 30,
+            alignItems: 'center'
+        },
         itemInReturnButton: {
             backgroundColor: 'white',
             paddingHorizontal: 15,

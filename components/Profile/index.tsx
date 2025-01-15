@@ -11,12 +11,17 @@ import { supabase } from '@/lib/supabase'
 import { removeFromBotMemory, removeUser, setUser } from '@/state/features/userSlice'
 import BotMemoryBox from '../BotMemoryBox'
 
+type GiftDetailsType = {
+    numberOfPeopleGifted: number,
+    giftingNetWorth: number
+}
 const Profile = () => {
     const appearanceMode = useSelector((state:RootState) => state.appearance.currentMode)
     const user = useSelector((state:RootState) => state.user)
     const dispatch = useDispatch()
     const styles = getStyles(appearanceMode)
     const { userId } = useLocalSearchParams();
+    const [userGiftDetails, setUserGiftDetails] = useState<GiftDetailsType>({ numberOfPeopleGifted: 0, giftingNetWorth: 0 })
 
     const fetchUserDetails = async () => {
         try {
@@ -28,6 +33,19 @@ const Profile = () => {
             dispatch(setNotification({ message: `Couldn't fetch user`, messageType: 'error', notificationType: 'system', showNotification: true, stay: false }))
         }
     }
+
+    const getGiftingDetails = async () => {
+        const { data, error } = await supabase
+        .from('Orders')
+        .select('orderTotal')
+        .eq('userId', user.userId)
+        
+        if(data) {
+            console.log('Data gotten from gifting details', data)
+        }
+    }
+
+
 
     const navigateToSignOut = () => {
         router.push('/(profile)/logoutscreen')

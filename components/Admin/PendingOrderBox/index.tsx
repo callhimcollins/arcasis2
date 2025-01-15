@@ -29,7 +29,7 @@ const PendingOrderBox = ({ order, filterOrderData }: PendingOrderBoxProps) => {
             .single()
             if(data) {
                 await filterOrderData(String(data.orderId))
-                sendPushNotification(order.Users.userId, order.Users.pushToken, 'Order Processed! Delivery In 2 Days.', 'View Details In Chat History', {})
+                sendPushNotification(order.Users.userId, order.Users.pushToken, 'Order Processed! Expect Package In 2 Days.', 'View Details In Chat History', {})
             }
     
             if(error) {

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import getStyles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/state/store'
-import { ProductType } from '@/types'
+import { CartItemType, ProductType } from '@/types'
 import { supabase } from '@/lib/supabase'
 import { TextInput } from 'react-native-gesture-handler'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -19,11 +19,14 @@ const RequestReturn = () => {
     const appearanceMode = useSelector((state: RootState) => state.appearance.currentMode)
     const styles = getStyles(appearanceMode);
     const order = useSelector((state: RootState) => state.order)
-    const [productsFound, setProductsFound] = useState<ProductFoundType[]>([])
-    const [itemsToReturn, setItemsToReturn] = useState<string[]>([])
+    const [productsFound, setProductsFound] = useState<CartItemType[]>([])
+    const [itemsToReturn, setItemsToReturn] = useState<CartItemType[]>([])
     const [reasonForReturn, setReasonForReturn] = useState<string>()
+    const [inRequests, setInRequests] = useState<string[]>([])
     const user = useSelector((state:RootState) => state.user)
     const dispatch = useDispatch()
+
+
 
     const getProducts = async () => {
         try {
@@ -46,15 +49,36 @@ const RequestReturn = () => {
         }
     }
 
-    const addToItemsToReturn = (cartItemId: string) => {
-        if(itemsToReturn.includes(cartItemId)) {
-            return setItemsToReturn((prev) => prev.filter((id) => id !== cartItemId))
+    const addToItemsToReturn = async (cartItem: CartItemType) => {
+        const { data, error } = await supabase
+        .from('Returns')
+        .select('cartItemId')
+        .eq('cartItemId', cartItem.cartItemId)
+        .eq('userId', user.userId)
+        .single()
+        if(data) {
+            dispatch(setNotification({
+                message: 'You already requested a return on this item',
+                messageType: 'error',
+                showNotification: true,
+                notificationType: 'system',
+                stay: false
+            }))
+            setInRequests((prev) => [...prev, cartItem.cartItemId])        
+            return;
         }
-        setItemsToReturn((prev) => [...prev, cartItemId])
+
+        if(error || !data) {
+            if(itemsToReturn.includes(cartItem)) {
+                return setItemsToReturn((prev) => prev.filter((cartProduct) => cartProduct.cartItemId !== cartItem.cartItemId))
+            }
+            setItemsToReturn((prev) => [...prev, cartItem])
+        }
     }
 
     const sendReturnRequest = async () => {
         console.log("Return!")
+        console.log(itemsToReturn)
         if(!reasonForReturn?.trim()) {
             dispatch(setNotification({
                 message: itemsToReturn.length > 1 ? 'Enter Your Reasons For Return' : 'Enter Your Reason For Return',
@@ -80,7 +104,7 @@ const RequestReturn = () => {
                 const { error } = await supabase
                 .from('Returns')
                 .insert({
-                    cartItemId: item,
+                    cartItemId: item.cartItemId,
                     userId: user.userId,
                     status: 'requested',
                     reasonForReturn,
@@ -110,7 +134,7 @@ const RequestReturn = () => {
 
 
     return (
-        <KeyboardAwareScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1, paddingBottom: 80 }}>
+        <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 80 }}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Request Return</Text>
@@ -137,14 +161,13 @@ const RequestReturn = () => {
                                 >
                                     {product.Products.name}
                                 </Text>
-                                <TouchableOpacity onPress={() => addToItemsToReturn(product.cartItemId)} style={ itemsToReturn.includes(product.cartItemId) ? styles.itemInReturnButton : styles.returnButton}>
-                                    <Text style={ itemsToReturn.includes(product.cartItemId) ? styles.itemInReturnText : styles.returnText}>{ itemsToReturn.includes(product.cartItemId) ? 'Remove' : 'Return' }</Text>
+                                <TouchableOpacity disabled={inRequests.includes(product.cartItemId)} onPress={() => addToItemsToReturn(product)} style={ itemsToReturn.includes(product) ? styles.itemInReturnButton : inRequests.includes(product.cartItemId) ? styles.disabledButton : styles.returnButton}>
+                                    <Text style={ itemsToReturn.includes(product) ? styles.itemInReturnText : styles.returnText}>{ itemsToReturn.includes(product) ? 'Remove' : 'Return' }</Text>
                                 </TouchableOpacity>
                             </View>
                         ))}
                     </ScrollView> : <Text style={styles.emptyText}>No Items Eligible For Return</Text> }
                 </View>
-
                 <View style={styles.reasonContainer}>
                     <Text style={styles.reasonHeader}>
                         Why Are You Returning Items Picked?
@@ -159,7 +182,7 @@ const RequestReturn = () => {
                     />
                 </View>
 
-                <View style={[styles.footer, { marginTop: 20 }]}>
+                <View style={[styles.footer, { marginTop: 20, zIndex: 1000 }]}>
                     <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
                         <Text style={styles.backButtonText}>Go Back</Text>
                     </TouchableOpacity>

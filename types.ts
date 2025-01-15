@@ -74,9 +74,11 @@ export type ShippingAddressType = {
 }
 
 export type CartItemType = {
+    cartItemId: string,
     productId: string,
     orderId: string,
-    quantity: number
+    quantity: number,
+    Products: ProductType
 }
 
 export type BotMemoryType = {
@@ -112,6 +114,6 @@ export type ReturnRequestType = {
     returnId: string,
     userId?: string,
     cartItemId: string,
-    returnStatus?: 'requested' | 'approved' | null,
+    status?: 'requested' | 'approved' | null,
     reasonForReturn: string,
 }

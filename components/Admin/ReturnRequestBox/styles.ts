@@ -32,8 +32,20 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
             marginBottom: 10
         },
         reasonForReturnText: {
-            fontFamily: 'soramedium',
-            marginVertical: 10
+            fontFamily: 'sorabold',
+            marginTop: 10,
+            fontSize: 13
+        },
+        userDetailText: {
+            marginBottom: 10,
+            fontFamily: 'sorabold',
+            fontSize: 13
+        },
+        approvedButton: {
+            backgroundColor: '#39A13D',
+            padding: 10,
+            borderRadius: 15,
+            alignItems: 'center'
         },
         approveButton: {
             backgroundColor: appearanceMode.primaryColor,
