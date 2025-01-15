@@ -1,5 +1,5 @@
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import getStyles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/state/store'
@@ -41,7 +41,11 @@ const Profile = () => {
         .eq('userId', user.userId)
         
         if(data) {
-            console.log('Data gotten from gifting details', data)
+            setUserGiftDetails({ numberOfPeopleGifted: data.length, giftingNetWorth: data.reduce((acc, curr) => acc + curr.orderTotal, 0) })
+        }
+
+        if(error){
+            console.log("An error occurred getting gift details", error)
         }
     }
 
@@ -80,6 +84,10 @@ const Profile = () => {
         })
     }
 
+    useEffect(() => {
+        getGiftingDetails()
+    }, [])
+
     return (
         <View style={styles.container}>
             
@@ -100,12 +108,12 @@ const Profile = () => {
                 <View style={styles.giftInfoContainer}>
                     <View style={styles.giftInfoItem}>
                         <Text style={styles.giftInfoItemText}>Number Of People You Have Gifted</Text>
-                        <Text style={styles.mainGiftInfo}>23</Text>
+                        <Text style={styles.mainGiftInfo}>{userGiftDetails.numberOfPeopleGifted}</Text>
                     </View>
 
                     <View style={styles.giftInfoItem}>
                         <Text style={styles.giftInfoItemText}>Gifting Net Worth</Text>
-                        <Text style={styles.mainGiftInfo}>$4,103</Text>
+                        <Text style={styles.mainGiftInfo}>${ userGiftDetails.giftingNetWorth.toFixed(2) }</Text>
                     </View>
                 </View>
 

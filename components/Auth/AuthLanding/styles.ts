@@ -89,6 +89,17 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
             borderColor: '#E3E3E3',
             color: appearanceMode.textColor
         },
+        passwordInputContainer: {
+            backgroundColor: '#F5F5F5',
+            borderRadius: 15,
+            borderColor: '#E3E3E3',
+            borderWidth: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            gap: 5
+        },
         emailButton: {
             backgroundColor: appearanceMode.primaryColor,
             padding: Platform.OS === 'ios' ? 15 : 12,

@@ -10,7 +10,9 @@ import { router } from 'expo-router'
 import { supabase } from '@/lib/supabase'
 import { randomUUID } from 'expo-crypto'
 import { setBotData, setBotMemories, setUser } from '@/state/features/userSlice'
-import { removeChat, setBotReplying, setChatsContainerId, setOrAddChat } from '@/state/features/chatSlice'
+import { removeChat, setBotReplying, setChatHistory, setChatsContainerId, setOrAddChat } from '@/state/features/chatSlice'
+import { addToProductsFound, clearProductsFoundInRecommendations } from '@/state/features/recommendationSlice'
+import { clearOrderDetails, setOrderDetails } from '@/state/features/orderSlice'
 import { BotMemoryType, ChatBoxType, GPTCompletionType, ProductType } from '@/types'
 import { openai } from '@/lib/openAiConfig'
 import { bridgeForFetchingRecommendations, chatSummarizer, fetchRecommendations, mainChatAssistant, topicGenerator } from '@/lib/arcafinetune'
@@ -19,7 +21,6 @@ import extractArrayFromResponse from '@/utils/extractJson'
 import crawlProduct from '@/utils/productCrawler'
 import NotificationPopup from '../NotificationPopup'
 import { clearNotification, setNotification } from '@/state/features/notificationSlice'
-import { setOrderDetails } from '@/state/features/orderSlice'
 import { registerForPushNotificationsAsync } from '@/utils/registerPushNotificationsAsync'
 import * as ExternalNotifications from 'expo-notifications';
 
@@ -34,7 +35,7 @@ const Home = () => {
 	const [input, setInput] = useState<string>('')
 	const [lastUserResponse, setLastUserResponse] = useState<string>('')
 	const [botLastResponse, setBotLastResponse] = useState<string>('')
-	const [expoPushToken, setExpoPushToken] = useState<string>('')
+	const productsFound = useSelector((state:RootState) => state.recommendations.productsFound)
 	const styles = getStyles(appearanceMode)
 	const dispatch = useDispatch()
 	const botId = randomUUID()
@@ -589,7 +590,61 @@ const Home = () => {
 		} else {
 		  console.log('badge count successfully updated')
 		}
-	  }
+	}
+
+	const getCartItems = async (orderId: string) => {
+        await dispatch(clearProductsFoundInRecommendations())
+        const { data, error } = await supabase
+        .from('CartItems')
+        .select('*, Products(*)')
+        .eq('orderId', orderId)
+        if(data) {
+            data.forEach(item => {
+                dispatch(addToProductsFound(item.Products))
+            })
+        }
+
+        if(error) {
+            console.log("An error occurred in getCartItems", error);
+        }
+    }
+
+	const getOrderThroughNotificationResponse = async (chatsContainerId: string) => {
+        const { data, error } = await supabase
+        .from('Orders')
+        .select()
+        .eq('chatsContainerId', chatsContainerId)
+        .single()
+        if(error) {
+            console.log("Couldn't get order", error);
+            if(productsFound &&productsFound?.length > 0) {
+                dispatch(clearProductsFoundInRecommendations())
+            }
+            if(order.orderDetails) {
+                dispatch(clearOrderDetails())
+            }
+        }
+
+        if(data) {
+            await getCartItems(data.orderId);
+            dispatch(setOrderDetails(data));
+        }
+    }
+
+	const getChatsThroughNotificationResponse = async (chatsContainerId: string) => {
+		const { data, error } = await supabase
+		.from('Chats')
+		.select()
+		.eq('chatsContainerId', chatsContainerId)
+		.order('createdAt', { ascending: true })
+		if(data) {
+			await getOrderThroughNotificationResponse(chatsContainerId);
+			await dispatch(setChatHistory(data))
+		}
+		if(error){
+			console.log(error)
+		}
+	}
 
 
 	useEffect(() => {
@@ -627,7 +682,11 @@ const Home = () => {
 		});
 
 		const subscription = ExternalNotifications.addNotificationResponseReceivedListener(response => {
-			console.log("🔔 Notification Response: ", JSON.stringify(response, null, 2));
+			const responseData = response.notification.request.content.data
+			console.log(responseData)
+			setTimeout(() => {
+				getChatsThroughNotificationResponse(responseData.chatsContainerId)
+			}, 500)
 		})
 
 		const subscription2 = ExternalNotifications.addNotificationReceivedListener(response => {

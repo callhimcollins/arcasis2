@@ -25,11 +25,11 @@ const PendingOrderBox = ({ order, filterOrderData }: PendingOrderBoxProps) => {
             .from('Orders')
             .update({ status: 'fulfilled' })
             .eq('orderId', order.orderId)
-            .select('orderId')
+            .select('orderId, chatsContainerId')
             .single()
             if(data) {
                 await filterOrderData(String(data.orderId))
-                sendPushNotification(order.Users.userId, order.Users.pushToken, 'Order Processed! Expect Package In 2 Days.', 'View Details In Chat History', {})
+                sendPushNotification(order.Users.userId, order.Users.pushToken, 'Order Processed! Expect Package In 2 Days.', 'View Chat', { chatsContainerId: data.chatsContainerId, })
             }
     
             if(error) {

@@ -153,7 +153,7 @@ const Body = ({ retryRecommendations }: BodyProps) => {
                     { processingOrders.length > 0 && 
                     <View style={styles.processingOrdersContainer}>
                         <Text style={styles.processingOrdersText}>Processing Gift Boxes</Text>
-                        <ScrollView showsHorizontalScrollIndicator={false} horizontal>
+                        <ScrollView contentContainerStyle={{ padding: 10 }} showsHorizontalScrollIndicator={false} horizontal>
                             { ordersList.map((order:any, index) => (
                                 <TouchableOpacity onPress={() => getChats(order)} key={index} style={styles.orderContainer}>
                                     { 

@@ -22,6 +22,7 @@ const AuthLanding = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [userInfo, setUserInfo] = useState(null)
+  const [showPassword, setShowPassword] = useState(false)
   const dispatch = useDispatch()
   console.log(AuthSession.makeRedirectUri({ scheme: "arcasis" }));
 
@@ -29,7 +30,7 @@ const AuthLanding = () => {
     androidClientId: "502638950148-1gm0o9hrm1kopis4fo8eoalmgj2mrgel.apps.googleusercontent.com",
     iosClientId: "502638950148-rja60aqveqht9gmk4nn6p4kmsls71rud.apps.googleusercontent.com",
     redirectUri: AuthSession.makeRedirectUri({
-      scheme: 'com.arcasisco.arcasis', // Ensure the scheme matches your app.json
+      scheme: 'com.arcasisco.arcasis',
     }),
   })
 
@@ -172,12 +173,12 @@ const AuthLanding = () => {
       try {
         const { data, error } = await supabase.auth.signInWithIdToken({
           provider: 'google',
-          token: id_token, // Use id_token instead of access_token
+          token: id_token, 
         })
   
         if (error) throw error
         console.log(data.user.user_metadata.avatar_url)
-        // If successful, get or create user in your database
+        // If successful, get or create user in database
         const { data: userData, error: userError } = await supabase
           .from('Users')
           .select()
@@ -236,8 +237,14 @@ const AuthLanding = () => {
 
 
       <View style={styles.emailContainer}>
-        <TextInput value={email} onChangeText={(text) => setEmail(text)} style={styles.input} placeholder='Email Address' placeholderTextColor={'#7C7C7C'}/>
-        <TextInput value={password} onChangeText={(text) => setPassword(text)} style={styles.input} placeholder='Password' placeholderTextColor={'#7C7C7C'}/>
+        <TextInput value={email} onChangeText={(text) => setEmail(text.trim())} style={styles.input} placeholder='Email Address' placeholderTextColor={'#7C7C7C'}/>
+
+          <View style={styles.passwordInputContainer}>
+              <TextInput secureTextEntry={!showPassword} value={password} onChangeText={(text) => setPassword(text.trim())} style={[styles.input, { flex: 1, borderWidth: 0 }]} placeholder='Password' placeholderTextColor={'#7C7C7C'}/>
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ marginRight: 10 }}>
+                <Ionicons name={showPassword ? 'eye' : 'eye-off'} size={26} color='#7C7C7C'/>
+              </TouchableOpacity>
+          </View>
 
         <TouchableOpacity onPress={authenticateUser} activeOpacity={0.5} style={styles.emailButton}>
           <Ionicons name='mail' size={26} color='white'/>
