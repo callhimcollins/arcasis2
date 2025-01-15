@@ -46,14 +46,6 @@ const ChatInput = ({ input, setInput, onSend, primaryButton }: ChatInputProps) =
         inputRef.current?.focus();
     }
 
-    // useEffect(() => {
-    //     if(order.orderDetails?.orderId && order.orderDetails.status !== 'created') {
-    //         console.log("Order Details: " + order.orderDetails?.orderId)
-    //         actionButtonContainerPosition.value = withTiming(-45, { duration: 500 })
-    //     } else {
-    //         actionButtonContainerPosition.value = withTiming(DEVICE_HEIGHT, { duration: 500 })
-    //     }
-    // }, [order.orderDetails?.orderId])
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>

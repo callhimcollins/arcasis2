@@ -45,10 +45,6 @@ const Preview = () => {
                     </View>
                     }
 
-                {/* { order.cartProducts.length > 0 && <View style={styles.aiMessageContainer}>
-                    <Image style={styles.logo} source={require('@/assets/images/arcasislogo.png')}/>
-                    <Text style={styles.aiMessageText}>Wow, Sarah is going to be so happy to get these! 🎉 These thoughtful items will make her day extra special.</Text>
-                </View>} */}
             </ScrollView>
 
             <View style={styles.footer}>

@@ -18,6 +18,8 @@ export default {
       openAiApiKey: process.env.OPENAI_API_KEY,
       stripeSecretKey: process.env.STRIPE_SECRET_KEY,
       stripePublishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+      androidClientId: process.env.ANDROID_CLIENT_ID,
+      iosClientId: process.env.IOS_CLIENT_ID,
       eas: {
         projectId: "098f8b9e-9194-4472-967d-0b1cdfb45044"
       },

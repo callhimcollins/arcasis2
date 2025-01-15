@@ -74,11 +74,11 @@ export type ShippingAddressType = {
 }
 
 export type CartItemType = {
-    cartItemId: string,
+    cartItemId?: string,
     productId: string,
     orderId: string,
     quantity: number,
-    Products: ProductType
+    Products?: ProductType
 }
 
 export type BotMemoryType = {

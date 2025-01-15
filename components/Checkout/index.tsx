@@ -19,7 +19,6 @@ const Checkout = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const order = useSelector((state:RootState) => state.order)
     const user = useSelector((state:RootState) => state.user)
-    const chatsDetails = useSelector((state:RootState) => state.chat)
     const address = useSelector((state:RootState) => state.order.shippingAddress)
     const [paymentSheetReady, setPaymentSheetReady] = useState<boolean>(false);
     const { initPaymentSheet, presentPaymentSheet } = useStripe();

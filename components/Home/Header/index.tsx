@@ -12,9 +12,7 @@ import { supabase } from '@/lib/supabase'
 
 const Header = () => {
     const appearanceMode = useSelector((state:RootState) => state.appearance.currentMode)
-    const orderId = useSelector((state:RootState) => state.order.orderDetails?.orderId)
     const user = useSelector((state:RootState) => state.user)
-    const chatsContainerId = useSelector((state:RootState) => state.chat.chatsContainerId)
     const chatTopic = useSelector((state:RootState) => state.chat.chatTopic)
     const styles = getStyles(appearanceMode)
     const dispatch = useDispatch()
@@ -72,9 +70,6 @@ const Header = () => {
                 </View>
 
                 <View style={styles.right}>
-                    {/* { orderId && <TouchableOpacity onPress={() => router.push('/(order)/previewscreen')} style={styles.currentOrderButton}>
-                        <Text style={styles.currentOrderButtonText}>Preview Order</Text>
-                    </TouchableOpacity>} */}
                     <TouchableOpacity onPress={startNew} style={styles.createButton}>
                         <AntDesign name='pluscircle' size={Platform.OS === 'ios' ? 24 : 20} color={`white`}/>
                         <Text style={styles.createButtonText}>New</Text>

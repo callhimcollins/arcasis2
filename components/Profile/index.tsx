@@ -107,7 +107,7 @@ const Profile = () => {
             <ScrollView contentContainerStyle={styles.scrollContentContainer}>
                 <View style={styles.giftInfoContainer}>
                     <View style={styles.giftInfoItem}>
-                        <Text style={styles.giftInfoItemText}>Number Of People You Have Gifted</Text>
+                        <Text style={styles.giftInfoItemText}>Number Of Times You Have Gifted</Text>
                         <Text style={styles.mainGiftInfo}>{userGiftDetails.numberOfPeopleGifted}</Text>
                     </View>
 

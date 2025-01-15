@@ -23,21 +23,30 @@ const HistoryBox = ({ historyBox, onDelete }: HistoryBoxProps) => {
     const styles = getStyles(appearanceMode);
     const productsFound = useSelector((state:RootState) => state.recommendations.productsFound)
     const order = useSelector((state:RootState) => state.order)
+
     const formatTime = () => {
         const now = moment();
         const givenDate = moment(historyBox.createdAt);
+        const minutesDiff = now.diff(givenDate, 'minutes');
+        const hoursDiff = now.diff(givenDate, 'hours');
+        const daysDiff = now.diff(givenDate, 'days');
       
-        if (givenDate.isSame(now, 'day')) {
-          return 'Today';
-        } else if (givenDate.isSame(now.subtract(1, 'day'), 'day')) {
+        if (hoursDiff < 24) {
+          if (minutesDiff < 1) {
+            return 'Just now';
+          }
+          if (minutesDiff < 60) {
+            return `${minutesDiff} ${minutesDiff === 1 ? 'minute' : 'minutes'} ago`;
+          }
+          return `${hoursDiff} ${hoursDiff === 1 ? 'hour' : 'hours'} ago`;
+        } else if (daysDiff === 1) {
           return 'Yesterday';
-        } else if (now.diff(givenDate, 'days') <= 7) {
-          return `${now.diff(givenDate, 'days')} days ago`;
+        } else if (daysDiff <= 7) {
+          return `${daysDiff} days ago`;
         } else {
-            console.log(givenDate)
-          return givenDate.format('Do MMMM YYYY'); // e.g., "23rd September 2024"
+          return givenDate.format('Do MMMM YYYY');
         }
-    };
+      };
 
 
     const getCartItems = async (orderId: string) => {

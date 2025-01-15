@@ -95,7 +95,7 @@ const ChatList = ({ data, retryRecommendations }: ChatListProps) => {
                 dispatch(setOrAddToCart({ 
                     productId: product.productId, 
                     orderId: String(order.orderDetails?.orderId), 
-                    quantity: 1 
+                    quantity: 1
                 }));
                 dispatch(addCartProductToState(product));
             }));

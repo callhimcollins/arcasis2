@@ -21,7 +21,6 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 const DEVICE_HEIGHT = Dimensions.get('window').height;
 const Address = () => {
     const appearanceMode = useSelector((state:RootState) => state.appearance.currentMode)
-    const shippingAddress = useSelector((state:RootState) => state.order.shippingAddress)
     const user = useSelector((state:RootState) => state.user)
     const styles = getStyles(appearanceMode)
     const dispatch = useDispatch()

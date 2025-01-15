@@ -13,7 +13,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import * as WebBrowser from 'expo-web-browser'
 import * as Google from 'expo-auth-session/providers/google'
 import * as AuthSession from 'expo-auth-session';
-
+import Constants from 'expo-constants'
 WebBrowser.maybeCompleteAuthSession()
 
 const AuthLanding = () => {
@@ -21,14 +21,12 @@ const AuthLanding = () => {
   const styles = getStyles(appearanceMode)
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const [userInfo, setUserInfo] = useState(null)
   const [showPassword, setShowPassword] = useState(false)
   const dispatch = useDispatch()
-  console.log(AuthSession.makeRedirectUri({ scheme: "arcasis" }));
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: "502638950148-1gm0o9hrm1kopis4fo8eoalmgj2mrgel.apps.googleusercontent.com",
-    iosClientId: "502638950148-rja60aqveqht9gmk4nn6p4kmsls71rud.apps.googleusercontent.com",
+    androidClientId: Constants.expoConfig?.extra?.androidClientId,
+    iosClientId: Constants.expoConfig?.extra?.iosClientId,
     redirectUri: AuthSession.makeRedirectUri({
       scheme: 'com.arcasisco.arcasis',
     }),

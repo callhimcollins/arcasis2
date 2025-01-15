@@ -73,8 +73,6 @@ const Home = () => {
 	
 			if(error) {
 			  console.log('An error occurred when getting user', error.message)
-			//   dispatch(setNotification({ message: `Couldn't Get User`, messageType: 'error', notificationType: 'system', showNotification: true, stay: false }))
-			//   redirectForAuthentication()
 			}
 		  })
 	}
@@ -210,8 +208,6 @@ const Home = () => {
 							dispatch(setNotification({ message: `Arca Not Responding. Restart App`, messageType: 'error', notificationType: 'system', showNotification: true, stay: true }))
 							dispatch(removeChat(aiMessage))
 						}
-					} else {
-						// Add notification pop up function here
 					}
 				}
 			} catch (error) {

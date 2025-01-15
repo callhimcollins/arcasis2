@@ -8,7 +8,7 @@ import { router } from 'expo-router'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { Keyboard } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-// import * as SMS from 'expo-sms'
+import * as SMS from 'expo-sms'
 
 
 const PaymentComplete = () => {
@@ -51,21 +51,21 @@ const PaymentComplete = () => {
         }
     }, [showPersonalMessageInput])
 
-    // const sendSMSToRecipient = async () => {
-    //     const { result } = await SMS.sendSMSAsync(
-    //         ['985-215-2633'],
-    //         'Hey! Arcasis!',
+    const sendSMSToRecipient = async () => {
+        const { result } = await SMS.sendSMSAsync(
+            ['985-215-2633'],
+            'Hey! Arcasis!',
             
-    //     )
-    //     console.log(result)
-    // }
+        )
+        console.log(result)
+    }
 
-    // useEffect(() => {
-    //     (async() => {
-    //         const smsIsAvailable = await SMS.isAvailableAsync();
-    //         setSmsIsAvailable(smsIsAvailable)
-    //     })()
-    // }, [])
+    useEffect(() => {
+        (async() => {
+            const smsIsAvailable = await SMS.isAvailableAsync();
+            setSmsIsAvailable(smsIsAvailable)
+        })()
+    }, [])
 
     return (
         <KeyboardAwareScrollView contentContainerStyle={{ paddingBottom: Platform.OS === 'ios' ? 0 : 200, flexGrow: 1 }} style={styles.container}>
