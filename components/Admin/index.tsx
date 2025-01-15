@@ -6,15 +6,17 @@ import { RootState } from '@/state/store'
 import { AntDesign } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import { ScrollView } from 'react-native'
-import { OrderType } from '@/types'
+import { OrderType, ReturnRequestType } from '@/types'
 import { supabase } from '@/lib/supabase'
 import { setNotification } from '@/state/features/notificationSlice'
 import PendingOrderBox from './PendingOrderBox'
+import ReturnRequestBox from './ReturnRequestBox'
 
 const Admin = () => {
     const appearanceMode = useSelector((state:RootState) => state.appearance.currentMode)
     const [selectedFor, setSelectedFor] = useState('Pending Orders')
     const [pendingOrders, setPendingOrders] = useState<OrderType[] | null>()
+    const [returnRequests, setReturnRequests] = useState<ReturnRequestType[] | null>()
     const styles = getStyles(appearanceMode)
     const dispatch = useDispatch()
 
@@ -53,11 +55,30 @@ const Admin = () => {
     }
 
     const fetchReturnRequests = async () => {
-
+        try {
+            const { data, error } = await supabase
+            .from('Returns')
+            .select('*, CartItems(*), Users(*)')
+            .order('createdAt', { ascending: false })
+    
+            if(data){
+                setReturnRequests(data)
+            }
+    
+            if(error) {
+                console.log('An error occurred fetching return requests')
+            }
+        } catch (error) {
+            console.log("An error occurred in fetchReturnRequests", error)
+        }
     }
 
-    const fileterOrderData = async (orderId: string) => {
+    const filterOrderData = (orderId: string) => {
         setPendingOrders(pendingOrders?.filter(pendingOrder => pendingOrder.orderId !== orderId))
+    }
+
+    const filterRequestsData = () => {
+        
     }
 
     const selectedForRender = () => {
@@ -65,22 +86,28 @@ const Admin = () => {
             return (
                 <View style={{ margin: 15 }}>
                     {pendingOrders?.map((order) => (
-                        <PendingOrderBox filterOrderData={() => fileterOrderData(String(order.orderId))} key={order.orderId} order={order} />
+                        <PendingOrderBox filterOrderData={() => filterOrderData(String(order.orderId))} key={order.orderId} order={order} />
                     ))}
                 </View>
             )
         } else if(selectedFor === 'Return Requests') {
             return (
-                <View>
-                    <Text>This is a test text for return requests</Text>
+                <View style={{ margin: 15 }}>
+                    {returnRequests?.map((returnRequest, index) => (
+                        <ReturnRequestBox key={index} filterRequestsData={filterRequestsData} returnRequest={returnRequest}/>
+                    ))}
                 </View>
             )
         }
     }
 
     useEffect(() => {
-        fetchPendingOrders()
-    }, [])
+        if(selectedFor === 'Pending Orders'){
+            fetchPendingOrders()
+        } else if(selectedFor === 'Return Requests') {
+            fetchReturnRequests()
+        }
+    }, [selectedFor])
 
     return (
         <View style={styles.container}>

@@ -108,9 +108,10 @@ export type BotMemoryBoxType = {
     createdAt?: string
 }
 
-export type ReturnType = {
+export type ReturnRequestType = {
+    returnId: string,
     userId?: string,
     cartItemId: string,
-    returnStatus: 'requested' | 'approved' | null,
+    returnStatus?: 'requested' | 'approved' | null,
     reasonForReturn: string,
 }
