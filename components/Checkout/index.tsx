@@ -102,7 +102,6 @@ const Checkout = () => {
             .eq('email', 'arcasisco@gmail.com')
             .single()
             if(data) {
-                console.log(data)
                 await sendPushNotification(data.userId, data.pushToken, 'Someone Placed An Order!', `${user.fullName} placed an order, which costs ${order.orderTotal}!`, { order })
             } 
             if(error) {

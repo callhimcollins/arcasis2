@@ -144,7 +144,6 @@ const Home = () => {
 
 
 	const onSend = async () => {
-		console.log(user.userId)
 		if(!input.trim()) {
 			dispatch(setNotification({ message: 'Please enter a message', messageType: 'error', notificationType: 'system', showNotification: true, stay: false }))
 			return;
@@ -428,7 +427,6 @@ const Home = () => {
 				if(error) {
 					console.log("An error occurred creating order", error.message)
 				} else {
-					console.log("Order Created!", data)
 					dispatch(setOrderDetails(data))
 				}
 			}

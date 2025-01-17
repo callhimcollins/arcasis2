@@ -77,8 +77,6 @@ const RequestReturn = () => {
     }
 
     const sendReturnRequest = async () => {
-        console.log("Return!")
-        console.log(itemsToReturn)
         if(!reasonForReturn?.trim()) {
             dispatch(setNotification({
                 message: itemsToReturn.length > 1 ? 'Enter Your Reasons For Return' : 'Enter Your Reason For Return',

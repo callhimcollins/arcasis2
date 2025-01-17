@@ -7,7 +7,7 @@ import { RootState } from '@/state/store'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { supabase } from '@/lib/supabase'
 import { setUser } from '@/state/features/userSlice'
-import { router } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 import { setNotification } from '@/state/features/notificationSlice'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as WebBrowser from 'expo-web-browser'
@@ -23,6 +23,9 @@ const AuthLanding = () => {
   const [password, setPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState(false)
   const dispatch = useDispatch()
+  const { access_token } = useLocalSearchParams()
+
+  console.log("This is the access token from auth landing", access_token)
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId: Constants.expoConfig?.extra?.androidClientId,
@@ -129,7 +132,6 @@ const AuthLanding = () => {
           .eq('userId', user?.id)
           .single()
           if(getUserData) {
-            console.log('User Data:', getUserData)
             dispatch(setUser(getUserData))
             router.replace('/')
           }
@@ -175,7 +177,6 @@ const AuthLanding = () => {
         })
   
         if (error) throw error
-        console.log(data.user.user_metadata.avatar_url)
         // If successful, get or create user in database
         const { data: userData, error: userError } = await supabase
           .from('Users')
@@ -235,10 +236,10 @@ const AuthLanding = () => {
 
 
       <View style={styles.emailContainer}>
-        <TextInput value={email} onChangeText={(text) => setEmail(text.trim())} style={styles.input} placeholder='Email Address' placeholderTextColor={'#7C7C7C'}/>
+        <TextInput autoCapitalize='none' value={email} onChangeText={(text) => setEmail(text.trim())} style={styles.input} placeholder='Email Address' placeholderTextColor={'#7C7C7C'}/>
 
           <View style={styles.passwordInputContainer}>
-              <TextInput secureTextEntry={!showPassword} value={password} onChangeText={(text) => setPassword(text.trim())} style={[styles.input, { flex: 1, borderWidth: 0 }]} placeholder='Password' placeholderTextColor={'#7C7C7C'}/>
+              <TextInput autoCapitalize='none' secureTextEntry={!showPassword} value={password} onChangeText={(text) => setPassword(text.trim())} style={[styles.input, { flex: 1, borderWidth: 0 }]} placeholder='Password' placeholderTextColor={'#7C7C7C'}/>
               <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={{ marginRight: 10 }}>
                 <Ionicons name={showPassword ? 'eye' : 'eye-off'} size={26} color='#7C7C7C'/>
               </TouchableOpacity>
@@ -263,7 +264,7 @@ const AuthLanding = () => {
 
         <View style={[styles.loginContainer, { marginTop: 40 }]}>
           <Text style={styles.loginText}>Forgotten Password?</Text>
-          <TouchableOpacity activeOpacity={0.5}>
+          <TouchableOpacity onPress={() => router.push('/(auth)/resetpasswordscreen')} activeOpacity={0.5}>
             <Text style={styles.loginButtonText}>Reset</Text>
           </TouchableOpacity>
         </View>

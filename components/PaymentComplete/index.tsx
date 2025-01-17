@@ -77,7 +77,7 @@ const PaymentComplete = () => {
                 Thank you! Arcasis Will Continue Improving For You And Your Loved Ones
             </Text>
 
-            {!showPersonalMessageInput && (
+            {/* {!showPersonalMessageInput && (
                 <Animated.View style={styles.addPersonalizedMessageContainer}>
                     <Text style={styles.personalizedMessageHeaderText}>
                         Add A Personal Message for {order.shippingAddress?.name}
@@ -94,9 +94,9 @@ const PaymentComplete = () => {
                         </TouchableOpacity>
                     </Animated.View>
                 </Animated.View>
-            )}
+            )} */}
 
-            <Animated.View style={[styles.addPersonalizedMessageContainer, animatedInputContainer]}>
+            {/* <Animated.View style={[styles.addPersonalizedMessageContainer, animatedInputContainer]}>
                 <View style={styles.sendTextOptionHeader}>
                     <Text style={styles.sendTextOptionHeaderText}>
                         To {order.shippingAddress?.name}
@@ -117,7 +117,7 @@ const PaymentComplete = () => {
                 <TouchableOpacity style={styles.sendButton}>
                     <Text style={styles.sendButtonText}>Send</Text>
                 </TouchableOpacity>
-            </Animated.View>
+            </Animated.View> */}
 
             <View style={styles.footer}>
                 <TouchableOpacity

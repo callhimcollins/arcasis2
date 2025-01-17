@@ -72,7 +72,6 @@ const Body = ({ retryRecommendations }: BodyProps) => {
 
 
     const getChats = async (order: any) => {
-        console.log(order.orderId)
         try {
             const { data:chatsData, error:chatsError } = await supabase
             .from('Chats')
