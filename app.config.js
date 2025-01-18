@@ -4,7 +4,7 @@ export default {
     slug: "arcasis",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/images/icon.png",
+    icon: "./assets/images/arcasisapplogo.png",
     scheme: "arcasis",
     platforms: ["ios", "android", "web"],
     assetBundlePatterns: ["**/*"],
@@ -43,8 +43,8 @@ export default {
     android: {
       googleServicesFile: "./google-services.json",
       adaptiveIcon: {
-        foregroundImage: "./assets/images/adaptive-icon.png",
-        backgroundColor: "#ffffff",
+        foregroundImage: "./assets/images/arcasisapplogo.png",
+        backgroundColor: "#EE6642",
       },
       package: "com.arcasisco.arcasis",
       intentFilters: [
@@ -91,10 +91,10 @@ export default {
       [
         "expo-splash-screen",
         {
-          image: "./assets/images/splash-icon.png",
+          image: "./assets/images/arcasisapplogo.png",
           imageWidth: 200,
           resizeMode: "contain",
-          backgroundColor: "#ffffff",
+          backgroundColor: "#EE6642",
         },
       ],
     ],

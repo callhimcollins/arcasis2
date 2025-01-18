@@ -6,7 +6,7 @@ import { RootState } from '@/state/store'
 import { router } from 'expo-router'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { supabase } from '@/lib/supabase'
-import { setShippingAddress } from '@/state/features/orderSlice'
+import { setOrderTotal, setShippingAddress } from '@/state/features/orderSlice'
 import { ShippingAddressType } from '@/types'
 import { CheckBox } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -114,11 +114,13 @@ const Address = () => {
                 dispatch(setNotification({ message: `Fill In All Fields Or Pick A Saved Address`, messageType: 'error', notificationType: 'system', showNotification: true, stay: false }))
                 return;
             } else {
-                dispatch(setShippingAddress({ name, streetAddress, city, state: selectedState, zipCode, userId: user.userId, extraInfo, phoneNumber }))
-                router.push('/(order)/checkoutscreen')
+                await dispatch(setShippingAddress({ name, streetAddress, city, state: selectedState, zipCode, userId: user.userId, extraInfo, phoneNumber }))
+                await dispatch(setOrderTotal(0))
+                await router.push('/(order)/checkoutscreen')
             }
         }
     }
+
 
     const saveNewAddress = async () => {
         if(!name || !streetAddress || !city || !selectedState || !zipCode) return;
@@ -137,9 +139,9 @@ const Address = () => {
             })
             .select()
             .single();
-    
             if(data) {
                 dispatch(setShippingAddress(data))
+                dispatch(setOrderTotal(0))
                 router.push('/(order)/checkoutscreen')
             } else {
                 console.log("An error occurred creating a new address", error?.message)
@@ -201,7 +203,24 @@ const Address = () => {
         } else {
             dispatch(clearNotification())
         }
-      };
+    };
+
+    const handlePhoneNumberInput = (text: string) => {
+        // Remove any non-numeric characters except +
+        const cleaned = text.replace(/[^\d+]/g, '');
+        
+        if (cleaned.startsWith('+1')) {
+            setPhoneNumber(cleaned.slice(2));
+            setFormattedPhoneNumber(cleaned);
+        } else if (cleaned.startsWith('1')) {
+            setPhoneNumber(cleaned.slice(1));
+            setFormattedPhoneNumber(`+${cleaned}`);
+        } else {
+            setPhoneNumber(cleaned);
+            setFormattedPhoneNumber(`+1${cleaned}`);
+        }
+    };
+    
 
     useEffect(() => {
         fetchAddresses();
@@ -262,7 +281,7 @@ const Address = () => {
                         defaultValue={phoneNumber}
                         placeholder={`Recipient's Phone Number`}
                         defaultCode="US"
-                        onChangeText={(text) => setPhoneNumber(text)}
+                        onChangeText={(text) => handlePhoneNumberInput(text)}
                         onChangeFormattedText={handlePhoneNumberValidation}
                         containerStyle={styles.phoneInputContainer}
                         // autoFocus

@@ -702,9 +702,6 @@ const Home = () => {
 
     return (
         <View style={styles.container}>
-			<View style={{ position: 'absolute', width: '100%' }}>
-				<NotificationPopup/>
-			</View>
 			<Header/>
 			<KeyboardAvoidingView 
 				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

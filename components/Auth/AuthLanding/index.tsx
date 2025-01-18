@@ -30,7 +30,7 @@ const AuthLanding = () => {
     androidClientId: Constants.expoConfig?.extra?.androidClientId,
     iosClientId: Constants.expoConfig?.extra?.iosClientId,
     redirectUri: AuthSession.makeRedirectUri({
-      scheme: 'arcasis',
+      scheme: 'com.arcasisco.arcasis',
     }),
   })
 
@@ -46,7 +46,6 @@ const AuthLanding = () => {
             password
         })
         if(signInError) {
-          console.log(signInError)
             if(signInError.message.includes('Invalid login credentials')) {
                 console.log('User not found. Attempting to sign up')
                 const { error: signUpError } = await supabase.auth.signUp({
@@ -72,7 +71,7 @@ const AuthLanding = () => {
 
                     if(signUpInsertError) {
                         console.log('Sign Up Insert Error', signUpInsertError.message)
-                        dispatch(setNotification({ message: `Couldn't Sign You Up`, messageType: 'error', notificationType: 'system', showNotification: true, stay: false }))
+                        dispatch(setNotification({ message: `Couldn't Sign You Up. ${signUpInsertError.message}`, messageType: 'error', notificationType: 'system', showNotification: true, stay: false }))
                         return;
                     }
                 }
@@ -255,10 +254,10 @@ const AuthLanding = () => {
           </TouchableOpacity> }
 
           {/* { Platform.OS === 'android' &&  */}
-            {/* <TouchableOpacity onPress={() => promptAsync()} style={styles.googleButton}>
+            <TouchableOpacity onPress={() => promptAsync()} style={styles.googleButton}>
               <Image style={styles.googleImage} source={require('@/assets/images/googleimage.png')}/>
               <Text style={styles.googleButtonText}>Continue With Google</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
            {/* } */}
 
         <View style={[styles.loginContainer, { marginTop: 40 }]}>

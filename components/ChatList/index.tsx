@@ -22,7 +22,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 import TypingAnimation from '../TypingAnimation';
 import { Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { addCartProductToState, setOrAddToCart, updateOrderStatus } from '@/state/features/orderSlice';
+import { addCartProductToState, clearCartProducts, setOrAddToCart, updateOrderStatus } from '@/state/features/orderSlice';
 import { supabase } from '@/lib/supabase';
 import { setNotification } from '@/state/features/notificationSlice';
 import { addToProductsFound } from '@/state/features/recommendationSlice';
@@ -89,6 +89,7 @@ const ChatList = ({ data, retryRecommendations }: ChatListProps) => {
         if (!productsFound?.length) return;
     
         try {
+            dispatch(clearCartProducts())
             // Execute all cart item additions concurrently
             await Promise.all(productsFound.map(async (product) => {
                 await addCartItem(product.productId);
@@ -195,7 +196,7 @@ const ChatList = ({ data, retryRecommendations }: ChatListProps) => {
                             <TypingAnimation isVisible={botReplying}/>
                         </View>}
                         { productsFound && productsFound.length > 0 && <View style={[styles.recommendationsContainer, (order.orderDetails?.status === 'fulfilled' || order.orderDetails?.status === 'to be fulfilled') && { backgroundColor: '#39A13D' }]}>
-                            { order.orderDetails?.status === 'created' && <View style={styles.recommendationsHeader}>
+                            { order.orderDetails?.status === 'created' || order.orderDetails?.status === 'pending' && <View style={styles.recommendationsHeader}>
                                 {<TouchableOpacity onPress={updateOrder} style={styles.retryButton}>
                                     <Ionicons name="gift" size={24} color="white"/>
                                     <Text style={styles.retryButtonText}>Begin Order</Text>

@@ -1,7 +1,7 @@
 import { Image, Platform, Text, TouchableOpacity, View, TextInput } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import getStyles from './styles'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/state/store'
 import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
@@ -9,18 +9,53 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 import { Keyboard } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as SMS from 'expo-sms'
+import { supabase } from '@/lib/supabase'
+import { clearChats, clearChatsContainerId, setChatsContainerId, setChatTopic, setShouldCreateChatsContainer } from '@/state/features/chatSlice'
+import { clearOrderDetails } from '@/state/features/orderSlice'
+import { clearProductsFoundInRecommendations } from '@/state/features/recommendationSlice'
 
 
 const PaymentComplete = () => {
     const appearanceMode = useSelector((state: RootState) => state.appearance.currentMode)
     const order = useSelector((state: RootState) => state.order)
+    const user = useSelector((state:RootState) => state.user)
     const styles = getStyles(appearanceMode)
     const [showPersonalMessageInput, setShowPersonalMessageInput] = useState<boolean>(false)
     const showInputHeight = useSharedValue(0)
     const showInputOpacity = useSharedValue(0)
     const textInputRef = useRef<TextInput>(null) // Ref for TextInput
     const [smsIsAvailable, setSmsIsAvailable] = useState<boolean>(false)
+    const dispatch = useDispatch()
 
+    const getOrCreateChatsContainerId = async () => {
+        try {
+            const { data, error } = await supabase
+            .from('ChatsContainers')
+            .insert({ userId: user.userId })
+            .select()
+            .single()
+            if(data) {
+                dispatch(setChatsContainerId(data.chatsContainerId))
+                console.log("Chats Container Id Set")
+            }
+            if(error) {
+                console.log('An error occurred setting chats container id', error.message)
+            }
+        } catch (error) {
+            console.log('An error occurred in getOrCreateChatsContainer', error)
+        }
+    }
+
+const startNew = async () => {
+    dispatch(clearChats());
+    dispatch(setChatTopic(''))
+    dispatch(clearChatsContainerId())
+    dispatch(clearOrderDetails())
+    dispatch(setShouldCreateChatsContainer(true))
+    dispatch(clearProductsFoundInRecommendations())
+    await getOrCreateChatsContainerId()
+    await router.replace('/')
+}
 
     const animatedInputContainer = useAnimatedStyle(() => {
         return {
@@ -120,7 +155,7 @@ const PaymentComplete = () => {
 
             <View style={styles.footer}>
                 <TouchableOpacity
-                    onPress={() => router.replace('/')}
+                    onPress={startNew}
                     style={[styles.continueButton]}
                 >
                     <Text style={styles.continueButtonText}>Go Home</Text>
