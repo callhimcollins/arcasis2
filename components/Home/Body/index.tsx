@@ -174,17 +174,15 @@ const Body = ({ retryRecommendations }: BodyProps) => {
                 </ScrollView>
             )
         } else {
-            return (<View style={styles.chatsContainer}>
-                <ChatList retryRecommendations={retryRecommendations} data={chats}/>
-                </View>)
+            return <ChatList retryRecommendations={retryRecommendations} data={chats}/>
         }
     }
     
     return (
-        <View style={styles.container}>
+        <>
             { conditionalRenderForChats() }
-        </View>
+        </>
     );
 };
 
-export default Body;
+export default Body

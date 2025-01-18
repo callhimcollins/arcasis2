@@ -55,7 +55,6 @@ const PaymentComplete = () => {
         const { result } = await SMS.sendSMSAsync(
             ['985-215-2633'],
             'Hey! Arcasis!',
-            
         )
         console.log(result)
     }

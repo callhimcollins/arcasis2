@@ -25,13 +25,12 @@ const AuthLanding = () => {
   const dispatch = useDispatch()
   const { access_token } = useLocalSearchParams()
 
-  console.log("This is the access token from auth landing", access_token)
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId: Constants.expoConfig?.extra?.androidClientId,
     iosClientId: Constants.expoConfig?.extra?.iosClientId,
     redirectUri: AuthSession.makeRedirectUri({
-      scheme: 'com.arcasisco.arcasis',
+      scheme: 'arcasis',
     }),
   })
 
@@ -256,10 +255,10 @@ const AuthLanding = () => {
           </TouchableOpacity> }
 
           {/* { Platform.OS === 'android' &&  */}
-            <TouchableOpacity onPress={() => promptAsync()} style={styles.googleButton}>
+            {/* <TouchableOpacity onPress={() => promptAsync()} style={styles.googleButton}>
               <Image style={styles.googleImage} source={require('@/assets/images/googleimage.png')}/>
               <Text style={styles.googleButtonText}>Continue With Google</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
            {/* } */}
 
         <View style={[styles.loginContainer, { marginTop: 40 }]}>

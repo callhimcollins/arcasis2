@@ -6,6 +6,12 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
         container: {
             flex: 1,
             backgroundColor: appearanceMode.backgroundColor
+        },
+        bodyContainer: {
+            flex: 1
+        },
+        keyboardAvoidingContainer: {
+            flex: 1
         }
     })
 }

@@ -8,11 +8,9 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
         container: {
             flex: 1,
             backgroundColor: '#FFFFFF',
-            position: 'relative',
         },
         scrollContent: {
             paddingTop: 140,
-            // justifyContent: 'center',
             alignItems: 'center',
             flex: 1
         },
@@ -78,7 +76,7 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
         },
         chatsContainer: {
             backgroundColor: appearanceMode.backgroundColor,
-            flex: 1
+            // flex: 1
         },
         greeting: {
             color: appearanceMode.textColor,

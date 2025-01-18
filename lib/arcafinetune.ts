@@ -232,10 +232,10 @@ Curator: "What kind of budget are you considering? We have options in the 'budge
 
 # Notes
 
-- Avoid discussing or showing specific products.
+- Avoid discussing or showing products as this will be handled by another function
 - Keep the interaction engaging and efficient.
 - Use the user's initial responses to guide the conversation for a personalized experience.
-- Don't be wordy with your responses.
+- Don't be wordy with your responses. It overwhelms the user.
 `
 
 export const bridgeForFetchingRecommendations = `

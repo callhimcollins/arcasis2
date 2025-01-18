@@ -7,15 +7,16 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
             backgroundColor: appearanceMode.secondaryBackgroundColor,
             alignSelf: 'flex-end',
             paddingHorizontal: 18,
-            marginHorizontal: 15,
             paddingVertical: 15,
+            marginHorizontal: 15,
+            marginVertical: 10,
             borderRadius: 25,
             justifyContent: 'center',
             alignItems: 'center',
-            shadowColor: '#000',  // Keep the shadow color dark
-            shadowOffset: { width: 0, height: 4 },  // Moderate offset for subtle depth
-            shadowOpacity: 0.15,  // Softer opacity for less intensity
-            shadowRadius: 8,  // Slight blur for a natural look
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.15,
+            shadowRadius: 8,
             marginBottom: 15,
             elevation: 3
         },

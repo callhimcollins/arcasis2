@@ -7,12 +7,10 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
     return StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: '#FFFFFF',
-            // position: 'relative',
         },
         scrollContent: {
             paddingTop: 210,
-            paddingBottom: Platform.OS === 'ios' ? 200 : 300,
+            paddingBottom: Platform.OS === 'ios' ? 320 : 350,
             gap: 25
         },
         greeting: {
@@ -30,10 +28,10 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
         gradient: {
             position: 'absolute',
             width: '100%',
-            height: 150, // Significantly increased height for more prominent fade
+            height: 150,
         },
         topGradient: {
-            top: 90, // Positioned below the header
+            top: 90,
             left: 0,
             right: 0,
         },
@@ -75,7 +73,6 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
         },
         searchButton: {
             alignSelf: 'center',
-            // marginVertical: 15,
             paddingVertical: 12,
             backgroundColor: 'white',
             width: '90%',

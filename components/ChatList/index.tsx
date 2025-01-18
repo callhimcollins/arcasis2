@@ -138,7 +138,7 @@ const ChatList = ({ data, retryRecommendations }: ChatListProps) => {
     const scrollToEnd = () => {
         if (flatListRef.current && data.length > 0) {
             setTimeout(() => {
-                flatListRef.current?.scrollToEnd({ animated: true });
+                flatListRef.current?.scrollToEnd({ animated: true, });
             }, 100);
         }
     };
@@ -156,48 +156,39 @@ const ChatList = ({ data, retryRecommendations }: ChatListProps) => {
         scrollToEnd();
     }, [data]);
 
-    
-
-
 
     const renderItem: ListRenderItem<ChatBoxType> = ({ item }) => (
         <ChatBox {...item} />
     );
 
     return (
-        <View style={styles.container}>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-                style={styles.container}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 200 }
-            >
-                <FlatList
-                    ref={flatListRef}
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => `${item.userId}-${index.toString()}`}
-                    contentContainerStyle={[
-                        styles.scrollContent,
-                        { flexGrow: 1, justifyContent: 'flex-end' }
-                    ]}
-                    keyboardDismissMode="interactive"
-                    keyboardShouldPersistTaps="handled"
-                    showsVerticalScrollIndicator={false}
-                    onContentSizeChange={() => {
-                        if (botReplying || data.length > 0) {
-                            scrollToEnd();
-                        }
-                    }}
-                    onLayout={() => {
-                        if (botReplying || data.length > 0) {
-                            scrollToEnd();
-                        }
-                    }}
-                    maintainVisibleContentPosition={{
-                        minIndexForVisible: 0,
-                        autoscrollToTopThreshold: 20,
-                    }}
-                    ListHeaderComponent={() =>  chats && chats.length > 0 && <Text style={{ textAlign: 'center', color: '#7A7A7A', fontFamily: 'sorabold', fontSize: Platform.OS === 'ios' ? 14 : 13 }}>Start Of Conversation</Text>}
+        <FlatList
+            ref={flatListRef}
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => `${item.userId}-${index.toString()}`}
+            keyboardDismissMode="interactive"
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+            onContentSizeChange={() => {
+                if (botReplying || data.length > 0) {
+                    scrollToEnd();
+                }
+            }}
+            onLayout={() => {
+                if (botReplying || data.length > 0) {
+                    scrollToEnd();
+                }
+            }}
+            maintainVisibleContentPosition={{
+                minIndexForVisible: 0,
+            }}
+            contentContainerStyle={{ 
+                paddingTop: 140,
+                paddingBottom: 120,
+                flexGrow: 1,
+            }}
+            ListHeaderComponent={() =>  chats && chats.length > 0 && <Text style={{ textAlign: 'center', color: '#7A7A7A', fontFamily: 'sorabold', fontSize: Platform.OS === 'ios' ? 14 : 13 }}>Start Of Conversation</Text>}
                     ListFooterComponent={() => (
                         <>
                         { !productsFound && botReplying && <View style={{ paddingVertical: 50 }}>
@@ -230,9 +221,7 @@ const ChatList = ({ data, retryRecommendations }: ChatListProps) => {
                         </View>}
                         </>
                     )}
-                />
-            </KeyboardAvoidingView>
-        </View>
+        />
     );
 };
 

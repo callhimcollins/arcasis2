@@ -1,6 +1,6 @@
 export default {
   expo: {
-    name: "arcasis",
+    name: "Arcasis Beta",
     slug: "arcasis",
     version: "1.0.0",
     orientation: "portrait",
@@ -63,6 +63,10 @@ export default {
           category: ["BROWSABLE", "DEFAULT"]
         }
       ],
+      permissions: ["android.permission.INTERNET"],
+      googleServices: {
+        enabled: true
+      }
     },
     web: {
       bundler: "metro",

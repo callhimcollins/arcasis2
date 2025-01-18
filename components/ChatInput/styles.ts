@@ -4,10 +4,9 @@ import { AppearanceStateType } from "@/types";
 const getStyles = (appearanceMode: AppearanceStateType) => {
     return StyleSheet.create({
         container: {
-            position: "absolute",
             bottom: 0,
             width: "100%",
-            zIndex: 100,
+            zIndex: 1000,
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
             backgroundColor: appearanceMode.backgroundColor
@@ -16,7 +15,7 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
             flexDirection: 'row',
             paddingHorizontal: 5,
             paddingTop: 10,
-            paddingBottom: 15,
+            paddingBottom: 10,
             gap: 12,
         },
         input: {

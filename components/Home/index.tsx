@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { KeyboardAvoidingView, Platform, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import getStyles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -706,8 +706,21 @@ const Home = () => {
 				<NotificationPopup/>
 			</View>
 			<Header/>
-			<Body retryRecommendations={() =>fetchRecommendationsByAI()}/>
-			<ChatInput onSend={onSend} input={input} setInput={(text) => setInput(text)}/>
+			<KeyboardAvoidingView 
+				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+				style={styles.keyboardAvoidingContainer}
+				keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+			>
+			<View style={styles.bodyContainer}>
+				<Body retryRecommendations={() => fetchRecommendationsByAI()} />
+			</View>
+
+			<ChatInput 
+				onSend={onSend} 
+				input={input} 
+				setInput={(text) => setInput(text)} 
+			/>
+		</KeyboardAvoidingView>
         </View>
     )
 }
