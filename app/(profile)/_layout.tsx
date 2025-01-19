@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler'; 
 import React from 'react'
 import { Stack } from 'expo-router'
 
@@ -8,7 +9,7 @@ const ProfileLayout = () => {
           <Stack.Screen name='memorypopup' options={{ presentation: 'modal' }}/>
           <Stack.Screen name='logoutscreen' options={{ presentation: 'modal' }}/>
           <Stack.Screen name='editprofilescreen'/>
-          <Stack.Screen name="[userId]"/>
+          <Stack.Screen name="user"/>
         </Stack>
 }
 

@@ -1,3 +1,5 @@
+import 'react-native-gesture-handler'; 
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -9,7 +11,6 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { store } from '@/state/store';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import StripeProviderWrapper from '@/components/StripeProviderWrapper';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -37,20 +38,14 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <StripeProviderWrapper>
-        <GestureHandlerRootView>
+    <StripeProviderWrapper>
+      <GestureHandlerRootView>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="(home)" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(order)" options={{ headerShown: false }} />
-            <Stack.Screen name="(profile)" options={{ headerShown: false }} />
-            <Stack.Screen name="(admin)" options={{ headerShown: false }} />
-          </Stack>
+          <Stack screenOptions={{ headerShown: false }}/>
           <StatusBar style="auto" />
         </ThemeProvider>
-        </GestureHandlerRootView>
-      </StripeProviderWrapper>
-    </Provider>
+      </GestureHandlerRootView>
+    </StripeProviderWrapper>
+  </Provider>
   );
 }

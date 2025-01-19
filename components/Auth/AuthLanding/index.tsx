@@ -31,7 +31,8 @@ const AuthLanding = () => {
     iosClientId: Constants.expoConfig?.extra?.iosClientId,
     redirectUri: AuthSession.makeRedirectUri({
       scheme: 'com.arcasisco.arcasis',
-    }),
+    },
+  ),
   })
 
   const authenticateUser = async () => {
@@ -90,7 +91,7 @@ const AuthLanding = () => {
 
             if(data) {
                 dispatch(setUser(data))
-                router.replace('/(home)')
+                router.replace('/')
             }
             if(error) {
                 console.log('An error occurred when getting user', error.message)
@@ -184,7 +185,7 @@ const AuthLanding = () => {
   
         if (userData) {
           dispatch(setUser(userData))
-          router.replace('/(home)')
+          router.replace('/')
         } else {
           // Create new user if doesn't exist
           const { data: newUser, error: createError } = await supabase

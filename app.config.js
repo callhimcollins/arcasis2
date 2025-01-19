@@ -6,6 +6,7 @@ export default {
     orientation: "portrait",
     icon: "./assets/images/arcasisapplogo.png",
     scheme: "arcasis",
+    jsEngine: "hermes",
     platforms: ["ios", "android", "web"],
     assetBundlePatterns: ["**/*"],
     hostUri: "arcasis.com",
@@ -38,7 +39,8 @@ export default {
       associatedDomains: ["applinks:arcasisco.com"],
       capabilities: {
         'com.apple.developer.in-app-payments': ['merchant.com.arcasis']
-      }
+      },
+      buildNumber: "7"
     },
     android: {
       googleServicesFile: "./google-services.json",
@@ -67,11 +69,6 @@ export default {
       googleServices: {
         enabled: true
       }
-    },
-    web: {
-      bundler: "metro",
-      output: "server",
-      favicon: "./assets/images/favicon.png",
     },
     plugins: [
       "expo-apple-authentication",

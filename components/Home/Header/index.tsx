@@ -20,7 +20,7 @@ const Header = () => {
     const navigateToProfile = () => {
         if (user?.userId) {
             router.push({
-                pathname: '/(profile)/[userId]',
+                pathname: '/(profile)/user',
                 params: { userId: user.userId },
             });
         }

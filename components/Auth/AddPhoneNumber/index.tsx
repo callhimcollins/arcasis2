@@ -43,7 +43,7 @@ const AddPhoneNumber = () => {
         .eq('userId', user.userId)
         
         if(!error) {
-            router.replace('/(home)')
+            router.replace('/')
         } else {
             console.log("An error occurred", error.message)
             dispatch(setNotification({ message: 'An error occurred', messageType: 'error', notificationType: 'system', showNotification: true, stay: true }))

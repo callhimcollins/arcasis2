@@ -132,7 +132,7 @@ const PersonalizeArca = () => {
   const goToHome = async () => {
     await updateUserDetails()
     await dispatch(setConversationWrapped(false))
-    await router.replace('/(home)')
+    await router.replace('/')
   }
 
 

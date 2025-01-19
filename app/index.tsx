@@ -2,8 +2,6 @@ import { StyleSheet, View } from 'react-native'
 import React from 'react'
 import Home from '@/components/Home'
 import NotificationPopup from '@/components/NotificationPopup'
-import Checkout from '@/components/Checkout'
-import Address from '@/components/Address'
 
 const HomeScreen = () => {
   return (
