@@ -8,7 +8,6 @@ import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { store } from '@/state/store';
 import StripeProviderWrapper from '@/components/StripeProviderWrapper';
@@ -38,14 +37,20 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-    <StripeProviderWrapper>
-      <GestureHandlerRootView>
+      <StripeProviderWrapper>
+        <GestureHandlerRootView>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack screenOptions={{ headerShown: false }}/>
+          <Stack initialRouteName='(home)' screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(home)"/>
+            <Stack.Screen name="(auth)"/>
+            <Stack.Screen name="(order)"/>
+            <Stack.Screen name="(profile)"/>
+            <Stack.Screen name="(admin)"/>
+          </Stack>
           <StatusBar style="auto" />
         </ThemeProvider>
-      </GestureHandlerRootView>
-    </StripeProviderWrapper>
-  </Provider>
+        </GestureHandlerRootView>
+      </StripeProviderWrapper>
+    </Provider>
   );
 }

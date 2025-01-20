@@ -40,7 +40,7 @@ export default {
       capabilities: {
         'com.apple.developer.in-app-payments': ['merchant.com.arcasis']
       },
-      buildNumber: "7"
+      buildNumber: "9"
     },
     android: {
       googleServicesFile: "./google-services.json",
