@@ -181,9 +181,6 @@ const ChatList = ({ data, retryRecommendations }: ChatListProps) => {
                     scrollToEnd();
                 }
             }}
-            maintainVisibleContentPosition={{
-                minIndexForVisible: 0,
-            }}
             contentContainerStyle={{ 
                 paddingTop: 140,
                 paddingBottom: 120,
@@ -196,7 +193,7 @@ const ChatList = ({ data, retryRecommendations }: ChatListProps) => {
                             <TypingAnimation isVisible={botReplying}/>
                         </View>}
                         { productsFound && productsFound.length > 0 && <View style={[styles.recommendationsContainer, (order.orderDetails?.status === 'fulfilled' || order.orderDetails?.status === 'to be fulfilled') && { backgroundColor: '#39A13D' }]}>
-                            { order.orderDetails?.status === 'created' || order.orderDetails?.status === 'pending' && <View style={styles.recommendationsHeader}>
+                            { (order.orderDetails?.status === 'created' || order.orderDetails?.status === 'pending') && <View style={styles.recommendationsHeader}>
                                 {<TouchableOpacity onPress={updateOrder} style={styles.retryButton}>
                                     <Ionicons name="gift" size={24} color="white"/>
                                     <Text style={styles.retryButtonText}>Begin Order</Text>

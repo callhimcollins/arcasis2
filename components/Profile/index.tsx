@@ -4,7 +4,7 @@ import getStyles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/state/store'
 import { router, useLocalSearchParams } from 'expo-router'
-import { Octicons } from '@expo/vector-icons'
+import { Ionicons, Octicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import { setNotification } from '@/state/features/notificationSlice'
 import { supabase } from '@/lib/supabase'
@@ -103,7 +103,7 @@ const Profile = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            
+            {/* <Text style={styles.testMode}>Test Mode</Text> */}
             <ScrollView contentContainerStyle={styles.scrollContentContainer}>
                 <View style={styles.giftInfoContainer}>
                     <View style={styles.giftInfoItem}>

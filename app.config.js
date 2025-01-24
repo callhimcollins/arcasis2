@@ -5,11 +5,11 @@ export default {
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/arcasisapplogo.png",
-    scheme: "arcasis",
+    scheme: "com.arcasisco.arcasis",
     jsEngine: "hermes",
     platforms: ["ios", "android", "web"],
     assetBundlePatterns: ["**/*"],
-    hostUri: "arcasis.com",
+    hostUri: "com.arcasisco.arcasis",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     extra: {
@@ -25,11 +25,11 @@ export default {
         projectId: "098f8b9e-9194-4472-967d-0b1cdfb45044"
       },
       router: {
-        origin: "https://arcasisco.com"
+        origin: "com.arcasisco.arcasis"
       }
     },
     ios: {
-      supportsTablet: true,
+      supportsTablet: false,
       infoPlist: {
         NSCameraUsageDescription:
           "This app needs access to your camera to send personalized video to gift recipient.",
@@ -40,31 +40,16 @@ export default {
       capabilities: {
         'com.apple.developer.in-app-payments': ['merchant.com.arcasis']
       },
-      buildNumber: "9"
+      buildNumber: "14"
     },
     android: {
+      versionCode: 14,
       googleServicesFile: "./google-services.json",
       adaptiveIcon: {
         foregroundImage: "./assets/images/arcasisapplogo.png",
         backgroundColor: "#EE6642",
       },
       package: "com.arcasisco.arcasis",
-      intentFilters: [
-        {
-          action: "VIEW",
-          autoVerify: true,
-          data: [
-            {
-              scheme: "arcasis" // Changed to match root scheme
-            },
-            {
-              scheme: "https",
-              host: "arcasisco.com"
-            }
-          ],
-          category: ["BROWSABLE", "DEFAULT"]
-        }
-      ],
       permissions: ["android.permission.INTERNET"],
       googleServices: {
         enabled: true

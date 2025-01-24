@@ -13,6 +13,7 @@ import { supabase } from '@/lib/supabase'
 import { clearChats, clearChatsContainerId, setChatsContainerId, setChatTopic, setShouldCreateChatsContainer } from '@/state/features/chatSlice'
 import { clearOrderDetails } from '@/state/features/orderSlice'
 import { clearProductsFoundInRecommendations } from '@/state/features/recommendationSlice'
+import { setNotification } from '@/state/features/notificationSlice'
 
 
 const PaymentComplete = () => {
@@ -21,6 +22,7 @@ const PaymentComplete = () => {
     const user = useSelector((state:RootState) => state.user)
     const styles = getStyles(appearanceMode)
     const [showPersonalMessageInput, setShowPersonalMessageInput] = useState<boolean>(false)
+    const [feedback, setFeedback] = useState<string>()
     const showInputHeight = useSharedValue(0)
     const showInputOpacity = useSharedValue(0)
     const textInputRef = useRef<TextInput>(null) // Ref for TextInput
@@ -46,16 +48,46 @@ const PaymentComplete = () => {
         }
     }
 
-const startNew = async () => {
-    dispatch(clearChats());
-    dispatch(setChatTopic(''))
-    dispatch(clearChatsContainerId())
-    dispatch(clearOrderDetails())
-    dispatch(setShouldCreateChatsContainer(true))
-    dispatch(clearProductsFoundInRecommendations())
-    await getOrCreateChatsContainerId()
-    await router.replace('/')
-}
+    const startNew = async () => {
+        dispatch(clearChats());
+        dispatch(setChatTopic(''))
+        dispatch(clearChatsContainerId())
+        dispatch(clearOrderDetails())
+        dispatch(setShouldCreateChatsContainer(true))
+        dispatch(clearProductsFoundInRecommendations())
+        await getOrCreateChatsContainerId()
+        await router.replace('/')
+    }
+
+    const sendFeedback = async () => {
+        if(!feedback?.trim()) {
+            dispatch(setNotification({
+                message: "Type Something To Go Home",
+                messageType: "info",
+                notificationType: "system",
+                showNotification: true,
+                stay: false
+            }))
+            return;
+        };
+        try {
+            const { data, error } = await supabase
+            .from('Feedbacks')
+            .insert({
+                userId: user.userId,
+                feedback
+            })
+            if(!error) {
+                console.log('Feedback sent successfully')
+                startNew()
+            }
+            if(error) {
+                console.log('An error occurred sending feedback', error.message)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const animatedInputContainer = useAnimatedStyle(() => {
         return {
@@ -105,11 +137,15 @@ const startNew = async () => {
         <KeyboardAwareScrollView contentContainerStyle={{ paddingBottom: Platform.OS === 'ios' ? 0 : 200, flexGrow: 1 }} style={styles.container}>
             <View style={styles.header}>
                 <Ionicons name="checkmark-circle-outline" size={30} color="#39A13D" />
-                <Text style={styles.headerText}>Payment Successful</Text>
+                <Text style={styles.headerText}>Thank You For Testing Arcasis</Text>
             </View>
-            <Text style={styles.arcasisInfo}>
-                Thank you! Arcasis Will Continue Improving For You And Your Loved Ones
-            </Text>
+
+            <View style={styles.feedBackInputContainer}>
+                <TextInput value={feedback} onChangeText={(text:string) => setFeedback(text)} multiline style={styles.feedBackInput} placeholder={`Would you use Arcasis if it goes live? Share your feedback...`} placeholderTextColor="#7A7A7A"/>
+                <TouchableOpacity onPress={sendFeedback} style={styles.sendButton}>
+                    <Text style={styles.sendButtonText}>Send</Text>
+                </TouchableOpacity>
+            </View>
 
             {/* {!showPersonalMessageInput && (
                 <Animated.View style={styles.addPersonalizedMessageContainer}>
@@ -154,12 +190,12 @@ const startNew = async () => {
             </Animated.View> */}
 
             <View style={styles.footer}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     onPress={startNew}
                     style={[styles.continueButton]}
                 >
                     <Text style={styles.continueButtonText}>Go Home</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </KeyboardAwareScrollView>
     )

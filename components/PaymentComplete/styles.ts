@@ -19,6 +19,19 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
             fontFamily: 'soraextrabold',
             fontSize: 20,
         },
+        feedBackInputContainer: {
+            marginTop: 40,
+            marginHorizontal: 20,
+        },
+        feedBackInput: {
+            borderWidth: 1,
+            borderColor: appearanceMode.faintColor,
+            paddingTop: 15,
+            paddingHorizontal: 20,
+            paddingBottom: 100,
+            borderRadius: 15,
+            fontFamily: 'sorabold'
+        },
         arcasisInfo: {
             color: appearanceMode.textColor,
             fontFamily: 'sorabold',

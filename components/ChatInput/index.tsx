@@ -34,13 +34,6 @@ const ChatInput = ({ input, setInput, onSend, primaryButton }: ChatInputProps) =
     const pathName = usePathname();
     const inputRef = useRef<TextInput>(null);
 
-
-    const animatedButtonContainer = useAnimatedStyle(() => {
-        return {
-            transform: [{ translateY: actionButtonContainerPosition.value }]
-        }
-    })
-
     const handlePickIdea = (idea:string) => {
         setInput(idea)
         inputRef.current?.focus();
@@ -48,7 +41,7 @@ const ChatInput = ({ input, setInput, onSend, primaryButton }: ChatInputProps) =
 
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
+        <View style={styles.container}>
             { pathName === '/' && !chats && <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.ideasContainer}>
                 {IDEAS.map((idea, index) => 
                 <TouchableOpacity onPress={() => handlePickIdea(idea)} key={index}>
@@ -62,7 +55,7 @@ const ChatInput = ({ input, setInput, onSend, primaryButton }: ChatInputProps) =
                     <FontAwesome6 name='arrow-up' size={20} color='white'/>
                 </TouchableOpacity>
             </View>
-        </KeyboardAvoidingView>
+        </View>
     )
 }
 

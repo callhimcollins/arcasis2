@@ -1,16 +1,17 @@
 import { stripe } from '@/utils/stripe-server'
 import Constants from 'expo-constants'
-
+console.log("It is bundling...")
 const stripePublishableKey = Constants.expoConfig?.extra?.stripePublishableKey
+
 export const POST = async (req: Request) => {
     const { amount, user } = await req.json()
+    console.log(user)
     let customerId = user.stripe_customer_id
     if(customerId === null) {
         console.log('creating stripe customer')
         const customer = await stripe.customers.create({
             name: user.fullName,
             email: user.email,
-            
         });
         customerId = customer.id
     }
@@ -28,6 +29,7 @@ export const POST = async (req: Request) => {
         },
     })
 
+
     return Response.json({
         paymentIntent: paymentIntent.client_secret,
         ephemeralKey: ephemeralKey.secret,
@@ -35,5 +37,3 @@ export const POST = async (req: Request) => {
         publishableKey: stripePublishableKey
     })
 }
-
-//     "expo": "~52.0.23",

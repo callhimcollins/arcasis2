@@ -12,6 +12,17 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
             alignItems: 'center',
             justifyContent: 'space-between'
         },
+        validateContainer: {
+            backgroundColor: '#FF9800',
+            marginHorizontal: 10,
+            borderRadius: 10,
+            padding: 10
+        },
+        validateText: {
+            textAlign: 'center',
+            fontFamily: 'sorabold',
+            fontSize: 13
+        },
         headerText: {
             color: appearanceMode.textColor,
             fontFamily: 'soraextrabold',

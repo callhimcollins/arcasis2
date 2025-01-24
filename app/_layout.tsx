@@ -35,20 +35,21 @@ export default function RootLayout() {
     return null;
   }
 
+
   return (
     <Provider store={store}>
       <StripeProviderWrapper>
         <GestureHandlerRootView>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack initialRouteName='(home)' screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(home)"/>
-            <Stack.Screen name="(auth)"/>
-            <Stack.Screen name="(order)"/>
-            <Stack.Screen name="(profile)"/>
-            <Stack.Screen name="(admin)"/>
-          </Stack>
-          <StatusBar style="auto" />
-        </ThemeProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? DefaultTheme : DefaultTheme}>
+            <Stack initialRouteName='(home)' screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="(home)"/>
+              <Stack.Screen name="(auth)"/>
+              <Stack.Screen name="(order)"/>
+              <Stack.Screen name="(profile)"/>
+              <Stack.Screen name="(admin)"/>
+            </Stack>
+            <StatusBar style="auto" />
+          </ThemeProvider>
         </GestureHandlerRootView>
       </StripeProviderWrapper>
     </Provider>

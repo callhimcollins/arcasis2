@@ -31,6 +31,13 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
             height: 40,
             resizeMode: 'contain'
         },
+        testMode: {
+            zIndex: 300,
+            backgroundColor: '#FF9800',
+            flexDirection: 'row',
+            textAlign: 'center',
+            fontFamily: 'sorabold'
+        },
         scrollContentContainer: {
             paddingTop: 70
         },

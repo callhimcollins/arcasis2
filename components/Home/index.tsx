@@ -148,6 +148,10 @@ const Home = () => {
 			dispatch(setNotification({ message: 'Please enter a message', messageType: 'error', notificationType: 'system', showNotification: true, stay: false }))
 			return;
 		};
+
+		if(!user.botData) {
+			await getOrCreateBotForUser(String(user.userId))
+		}
 		try {
 			dispatch(setOrAddChat(chatData))
 			const { data, error } = await supabase
@@ -704,20 +708,20 @@ const Home = () => {
         <View style={styles.container}>
 			<Header/>
 			<KeyboardAvoidingView 
-				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-				style={styles.keyboardAvoidingContainer}
-				keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
-			>
-			<View style={styles.bodyContainer}>
-				<Body retryRecommendations={() => fetchRecommendationsByAI()} />
-			</View>
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}  // Changed this
+			style={styles.keyboardAvoidingContainer}
+				keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 1} // Added small offset for Android
+				>
+				<View style={styles.bodyContainer}>
+					<Body retryRecommendations={() => fetchRecommendationsByAI()} />
+				</View>
 
-			<ChatInput 
-				onSend={onSend} 
-				input={input} 
-				setInput={(text) => setInput(text)} 
-			/>
-		</KeyboardAvoidingView>
+				<ChatInput 
+					onSend={onSend} 
+					input={input} 
+					setInput={(text) => setInput(text)} 
+				/>
+			</KeyboardAvoidingView>
         </View>
     )
 }

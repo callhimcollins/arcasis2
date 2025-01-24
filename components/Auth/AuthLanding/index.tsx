@@ -23,7 +23,6 @@ const AuthLanding = () => {
   const [password, setPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState(false)
   const dispatch = useDispatch()
-  const { access_token } = useLocalSearchParams()
 
 
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -114,6 +113,7 @@ const AuthLanding = () => {
           AppleAuthentication.AppleAuthenticationScope.EMAIL,
         ],
       });
+
       if(credential.identityToken) {
         const { data: { user }, error } = await supabase
         .auth
@@ -144,7 +144,11 @@ const AuthLanding = () => {
 
             if(!insertUserError) {
               dispatch(setUser(insertUserData))
-              router.replace('/(auth)/addnamescreen')
+              if(Platform.OS === 'ios') {
+                router.replace('/(auth)/addphonenumberscreen')
+              } else {
+                router.replace('/(auth)/addnamescreen')
+              }
             }
 
             if(insertUserError) {

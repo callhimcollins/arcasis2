@@ -8,10 +8,11 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
             backgroundColor: appearanceMode.backgroundColor
         },
         bodyContainer: {
-            flex: 1
+            flex: 1,
         },
         keyboardAvoidingContainer: {
-            flex: 1
+            flex: 1,
+            justifyContent: 'space-between'
         }
     })
 }

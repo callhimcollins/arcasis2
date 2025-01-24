@@ -6,10 +6,10 @@ const getStyles = (appearanceMode: AppearanceStateType) => {
         container: {
             bottom: 0,
             width: "100%",
-            zIndex: 1000,
+            zIndex: 200,
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
-            backgroundColor: appearanceMode.backgroundColor
+            backgroundColor: appearanceMode.backgroundColor,
         },
         inputContainer: {
             flexDirection: 'row',

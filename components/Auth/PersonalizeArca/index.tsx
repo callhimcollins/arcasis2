@@ -8,7 +8,7 @@ import ChatInput from '@/components/ChatInput';
 import ChatList from '@/components/ChatList';
 import { ChatBoxType, GPTCompletionType } from '@/types';
 import { openai } from '@/lib/openAiConfig';
-import { conversationWrappedChecker, introDataCollector, introductionForPersonalization } from '@/lib/arcafinetune';
+import { conversationWrappedChecker } from '@/lib/arcafinetune';
 import { setBotReplying, setConversationWrapped } from '@/state/features/chatSlice';
 import { router } from 'expo-router';
 import { extractObjectFromResponse } from '@/utils/extractJson';

@@ -13,7 +13,6 @@ import { setNotification } from '@/state/features/notificationSlice'
 import { sendPushNotification } from '@/utils/registerPushNotificationsAsync'
 import { setOrderTotal } from '@/state/features/orderSlice'
 
-
 const Checkout = () => {
     const appearanceMode = useSelector((state:RootState) => state.appearance.currentMode)
     const [loading, setLoading] = useState<boolean>(false);
@@ -25,20 +24,51 @@ const Checkout = () => {
     const styles = getStyles(appearanceMode)
     const dispatch = useDispatch()
 
+    const getAccessToken = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        return session?.access_token;
+    };
+
+
     async function fetchPaymentSheetParams(amount: number): Promise<{
         paymentIntent: string,
         ephemeralKey: string,
         customer: string
     }> {
-        return fetch(`/api/payment-sheet`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ amount, user, address }),
-        }).then((response) => response.json())
+        try {
+            const accessToken = await getAccessToken();
+            if (!accessToken) {
+                throw new Error('No access token found');
+            }
+            const response = await fetch(`https://hnzlzksswbdifwhnnamo.supabase.co/functions/v1/paymentSheet`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify({ 
+                    amount,
+                    user,
+                    address 
+                }),
+            });
+    
+            // Log the raw response text
+            const rawResponse = await response.text();
+    
+            // Attempt to parse the response as JSON
+            const data = JSON.parse(rawResponse);
+    
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to fetch payment sheet params');
+            }
+    
+            return data;
+        } catch (error) {
+            console.error('Error fetching payment sheet params:', error);
+            throw error;
+        }
     }
-
 
     const initializePaymentSheet = async () => {
         try {
@@ -60,7 +90,6 @@ const Checkout = () => {
                     console.log("An error occured adding stripe customer id", error.message)
                 }
             }
-
             const { error } = await initPaymentSheet({
                 merchantDisplayName: "Arcasis, Inc.",
                 customerId: user.stripe_customer_id ? user.stripe_customer_id : customer,
@@ -79,7 +108,6 @@ const Checkout = () => {
                 style: 'automatic',
                 removeSavedPaymentMethodMessage: "Remove this card?",
             });
-
             if (error) {
                 Alert.alert('Error', 'Unable to initialize payment sheet');
                 console.error('Payment sheet initialization error:', error);
@@ -105,7 +133,7 @@ const Checkout = () => {
                 await sendPushNotification(data.userId, data.pushToken, 'Someone Placed An Order!', `${user.fullName} placed an order, which costs ${order.orderTotal}!`, { order })
             } 
             if(error) {
-                console.log("An error occurred getting user", error.message)
+                console.log("An error occurred getting user data", error.message)
             }
         } catch (error) {
             console.log("An error occurred in sendPushNotificationToArcasis", error)
@@ -123,6 +151,7 @@ const Checkout = () => {
             if(!error){
                 console.log('Order Status Updated')
                 await sendPushNotificationToArcasis()
+                await router.push('/(order)/paymentcompletescreen')
             } else {
                 console.log(error.message)
             }
@@ -160,6 +189,9 @@ const Checkout = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.headerText}>Checkout</Text>
+            <View style={styles.validateContainer}>
+                <Text style={styles.validateText}>This Is A Demo To Validate The Idea. You Won’t Be Charged. Click 'Pay' To Proceed To The Next Page And Review.</Text>
+            </View>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
             <View style={styles.addressContainer}>
                 { !order.shippingAddress && <Text style={styles.addressText}>No Address Present</Text>}
