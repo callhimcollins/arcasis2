@@ -13,3 +13,5 @@ Arcasis is an OpenAI powered app, where users tell the AI their needs and it rec
 - Supabase
 
 Not live yet on App Store and Play Store but project is complete. College getting the better part of me lol.
+
+App Showcase: https://drive.google.com/file/d/1e7bZHjouA5Wh_koRE_ZPybzJjLY2YrwB/view?usp=sharing
